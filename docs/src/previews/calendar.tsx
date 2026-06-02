@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import * as React from "react";
 import { useState } from "react";
 import { AlertTriangle, CheckCircle2, FileText, Users } from "lucide-react";
 
@@ -6,12 +6,11 @@ import {
   Calendar,
   type CalendarEvent,
   type CalendarLegendItem,
-} from "./index";
+} from "@ds/components/calendar";
 
-/**
- * Stable reference month so stories render deterministically: Novembro 2025,
- * with a fixed "today" inside the month (the legacy reference data).
- */
+// A pinned reference month + fixed "today" keep the static previews
+// deterministic (no drift as the day boundary crosses). Mirrors the legacy
+// fiscal-calendar dataset (Novembro 2025).
 const REF = new Date(2025, 10, 1);
 const TODAY = new Date(2025, 10, 14);
 
@@ -40,97 +39,50 @@ const FISCAL_LEGEND: CalendarLegendItem[] = [
   { label: "Marco", tone: "green" },
 ];
 
-const meta: Meta<typeof Calendar> = {
-  title: "Components/Calendar",
-  component: Calendar,
-  tags: ["autodocs"],
-  parameters: {
-    layout: "padded",
-    docs: {
-      description: {
-        component:
-          "Calendário grande para visualização de eventos em painéis — fechamento mensal, prazos fiscais, agenda da equipe. Três visões (`month` · `week` · `agenda`), eventos tipados por tom semântico, suporte a multi-dia e all-day, legenda e truncamento de dias lotados com \"+N mais\". Para seleção de data em um campo de formulário, use `DatePicker`. Tons mapeados só com tokens semânticos (zero cor hardcoded); a cor nunca é o único sinal — horário, título e ícone reforçam. Decisões em ADR-022.",
-      },
-    },
-  },
-  argTypes: {
-    view: { control: "radio", options: ["month", "week", "agenda"] },
-    weekStartsOn: { control: "radio", options: [0, 1] },
-    showWeekNumbers: { control: "boolean" },
-    maxEventsPerDay: { control: { type: "number", min: 0, max: 6 } },
-    toolbar: { control: "boolean" },
-  },
-};
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
 // ──────────────────────────────────────────────────────────────────
-// Default — month view, fiscal calendar with legend
+// Mês — calendário fiscal com seleção de dia e clique em evento
 // ──────────────────────────────────────────────────────────────────
 
-export const Default: Story = {
-  args: {
-    view: "month",
-    defaultDate: REF,
-    today: TODAY,
-    events: FISCAL_EVENTS,
-    legend: FISCAL_LEGEND,
-  },
-  render: (args) => (
-    <div className="h-[680px]">
-      <Calendar {...args} />
+export function MonthRow(): React.ReactElement {
+  const [selected, setSelected] = useState<Date | null>(null);
+  const [clicked, setClicked] = useState<string | null>(null);
+  return (
+    <div className="flex flex-col gap-3 py-2">
+      <div className="h-[640px]">
+        <Calendar
+          view="month"
+          defaultDate={REF}
+          today={TODAY}
+          events={FISCAL_EVENTS}
+          legend={FISCAL_LEGEND}
+          selectedDate={selected}
+          onDayClick={setSelected}
+          onEventClick={(ev) => setClicked(String(ev.title))}
+        />
+      </div>
+      <div className="flex flex-wrap gap-4 text-xs text-fg-muted">
+        <span>
+          Dia selecionado:{" "}
+          <code className="font-mono">
+            {selected ? selected.toLocaleDateString("pt-BR") : "—"}
+          </code>
+        </span>
+        <span>
+          Último evento:{" "}
+          <code className="font-mono">{clicked ?? "—"}</code>
+        </span>
+      </div>
     </div>
-  ),
-};
+  );
+}
 
 // ──────────────────────────────────────────────────────────────────
-// Month — interactive (day selection + event click feedback)
+// Semana — eventos em coluna
 // ──────────────────────────────────────────────────────────────────
 
-export const Month: Story = {
-  render: () => {
-    function Interactive() {
-      const [selected, setSelected] = useState<Date | null>(null);
-      const [clicked, setClicked] = useState<string | null>(null);
-      return (
-        <div className="flex flex-col gap-3">
-          <div className="h-[680px]">
-            <Calendar
-              view="month"
-              defaultDate={REF}
-              today={TODAY}
-              events={FISCAL_EVENTS}
-              legend={FISCAL_LEGEND}
-              selectedDate={selected}
-              onDayClick={setSelected}
-              onEventClick={(ev) => setClicked(String(ev.title))}
-            />
-          </div>
-          <div className="flex flex-wrap gap-4 text-[12.5px] text-fg-muted">
-            <span>
-              <strong className="text-fg">Dia selecionado:</strong>{" "}
-              {selected ? selected.toLocaleDateString("pt-BR") : "—"}
-            </span>
-            <span>
-              <strong className="text-fg">Último evento:</strong>{" "}
-              {clicked ?? "—"}
-            </span>
-          </div>
-        </div>
-      );
-    }
-    return <Interactive />;
-  },
-};
-
-// ──────────────────────────────────────────────────────────────────
-// Week — events in columns
-// ──────────────────────────────────────────────────────────────────
-
-export const Week: Story = {
-  render: () => (
-    <div className="h-[520px]">
+export function WeekRow(): React.ReactElement {
+  return (
+    <div className="h-[500px] py-2">
       <Calendar
         view="week"
         defaultDate={new Date(2025, 10, 12)}
@@ -139,16 +91,16 @@ export const Week: Story = {
         legend={FISCAL_LEGEND}
       />
     </div>
-  ),
-};
+  );
+}
 
 // ──────────────────────────────────────────────────────────────────
-// Agenda — chronological list
+// Agenda — lista cronológica
 // ──────────────────────────────────────────────────────────────────
 
-export const Agenda: Story = {
-  render: () => (
-    <div className="h-[580px]">
+export function AgendaRow(): React.ReactElement {
+  return (
+    <div className="h-[560px] py-2">
       <Calendar
         view="agenda"
         defaultDate={REF}
@@ -157,16 +109,16 @@ export const Agenda: Story = {
         title="Agenda de Novembro"
       />
     </div>
-  ),
-};
+  );
+}
 
 // ──────────────────────────────────────────────────────────────────
-// Week numbers + Monday start
+// Números de semana — weekStartsOn={1} + showWeekNumbers
 // ──────────────────────────────────────────────────────────────────
 
-export const WeekNumbers: Story = {
-  render: () => (
-    <div className="h-[620px]">
+export function WeekNumbersRow(): React.ReactElement {
+  return (
+    <div className="h-[600px] py-2">
       <Calendar
         view="month"
         defaultDate={REF}
@@ -176,24 +128,16 @@ export const WeekNumbers: Story = {
         showWeekNumbers
       />
     </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "`weekStartsOn={1}` coloca segunda como primeira coluna; `showWeekNumbers` adiciona a coluna com o número ISO da semana.",
-      },
-    },
-  },
-};
+  );
+}
 
 // ──────────────────────────────────────────────────────────────────
-// Empty — planning month without events
+// Vazio — planejamento sem eventos
 // ──────────────────────────────────────────────────────────────────
 
-export const Empty: Story = {
-  render: () => (
-    <div className="h-[520px]">
+export function EmptyRow(): React.ReactElement {
+  return (
+    <div className="h-[500px] py-2">
       <Calendar
         view="month"
         defaultDate={REF}
@@ -202,13 +146,5 @@ export const Empty: Story = {
         maxEventsPerDay={0}
       />
     </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Mês sem eventos — visão limpa de planejamento. `maxEventsPerDay={0}` usa o calendário como navegador puro.",
-      },
-    },
-  },
-};
+  );
+}

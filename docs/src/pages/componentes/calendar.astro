@@ -1,0 +1,265 @@
+---
+import ComponentPreview from "../../layouts/ComponentPreview.astro";
+import HighlightedCode from "../../components/HighlightedCode.astro";
+import {
+  MonthRow,
+  WeekRow,
+  AgendaRow,
+  WeekNumbersRow,
+  EmptyRow,
+} from "../../previews/calendar";
+import { LiveCalendarSnippet } from "../../previews/calendar-live";
+import calendarSource from "@ds/components/calendar/index.tsx?raw";
+---
+
+<ComponentPreview
+  kicker="COMPONENTES · DADOS & CONTEÚDO"
+  title="Calendar"
+  group="Dados & conteúdo"
+  storybookId="components-calendar--default"
+  sourcePath="ui_kit/components/calendar"
+  lede='Calendário grande para visualização de <b>eventos</b> em painéis — fechamento mensal, prazos fiscais, agenda da equipe. Três visões (<code class="inline">month</code>, <code class="inline">week</code>, <code class="inline">agenda</code>), eventos tipados por tom semântico, suporte a multi-dia e all-day, legenda e truncamento de dias lotados com "+N mais". Para selecionar uma data em um campo de formulário, use o <a href="/componentes/date-picker">DatePicker</a> (<a href="/adr/ADR-004-datepicker-range-discriminated-union">ADR-004</a>): o Calendar é a superfície de agenda, o DatePicker é o seletor de input. Ver <a href="/adr/ADR-022-calendar-v0.1.0-dod-migration">ADR-022</a>.'
+>
+  <!-- ============ MÊS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Mês</h2>
+      <small>view="month" · seleção de dia + clique em evento</small>
+    </div>
+    <div class="preview">
+      <MonthRow client:load />
+    </div>
+    <p class="preview-caption">
+      Grade mensal com eventos por dia. Cada evento é um
+      <code class="inline">&lt;button&gt;</code> com horário, título e ícone
+      opcional (a cor nunca é o único sinal). O número do dia é o controle de
+      seleção quando <code class="inline">onDayClick</code> está presente; dias
+      lotados condensam em <code class="inline">+N mais</code>.
+    </p>
+  </section>
+
+  <!-- ============ SEMANA ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Semana</h2>
+      <small>view="week"</small>
+    </div>
+    <div class="preview">
+      <WeekRow client:load />
+    </div>
+    <p class="preview-caption">
+      Sete colunas com os eventos do período empilhados. Navegação avança/recua
+      uma semana por vez; o cabeçalho de cada dia traz o número como controle de
+      seleção.
+    </p>
+  </section>
+
+  <!-- ============ AGENDA ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Agenda</h2>
+      <small>view="agenda"</small>
+    </div>
+    <div class="preview">
+      <AgendaRow client:load />
+    </div>
+    <p class="preview-caption">
+      Lista cronológica — ideal para relatório. Só dias com evento aparecem;
+      eventos all-day mostram o marcador <code class="inline">Dia inteiro</code>
+      (texto, não apenas cor).
+    </p>
+  </section>
+
+  <!-- ============ NÚMEROS DE SEMANA ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Números de semana</h2>
+      <small>weekStartsOn={1} · showWeekNumbers</small>
+    </div>
+    <div class="preview">
+      <WeekNumbersRow client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">weekStartsOn={1}</code> coloca segunda como primeira
+      coluna; <code class="inline">showWeekNumbers</code> adiciona a coluna com o
+      número ISO da semana.
+    </p>
+  </section>
+
+  <!-- ============ VAZIO ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Sem eventos</h2>
+      <small>maxEventsPerDay={0}</small>
+    </div>
+    <div class="preview">
+      <EmptyRow client:load />
+    </div>
+    <p class="preview-caption">
+      Visão limpa de planejamento — o calendário como navegador puro de mês.
+    </p>
+  </section>
+
+  <!-- ============ PLAYGROUND ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Playground</h2>
+      <small>react-live · edite e veja ao vivo</small>
+    </div>
+    <LiveCalendarSnippet client:only="react" />
+  </section>
+
+  <!-- ============ PROPS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Props</h2>
+      <small>API pública</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">view</td>
+            <td class="type">"month" | "week" | "agenda"</td>
+            <td class="default">"month"</td>
+            <td class="desc">Qual visão renderizar (controlado; par com <code class="inline">onViewChange</code>).</td>
+          </tr>
+          <tr>
+            <td class="name">date · defaultDate</td>
+            <td class="type">Date</td>
+            <td class="default">hoje</td>
+            <td class="desc">Mês/semana em exibição.</td>
+          </tr>
+          <tr>
+            <td class="name">onDateChange</td>
+            <td class="type">(d) =&gt; void</td>
+            <td class="default">—</td>
+            <td class="desc">Disparado ao navegar (anterior/próximo/hoje).</td>
+          </tr>
+          <tr>
+            <td class="name">events</td>
+            <td class="type">CalendarEvent[]</td>
+            <td class="default">[]</td>
+            <td class="desc">Lista de eventos; multi-dia via <code class="inline">endDate</code>.</td>
+          </tr>
+          <tr>
+            <td class="name">onEventClick · onDayClick</td>
+            <td class="type">(ev) / (date) =&gt; void</td>
+            <td class="default">—</td>
+            <td class="desc">Clique em uma pílula de evento / em um dia.</td>
+          </tr>
+          <tr>
+            <td class="name">selectedDate</td>
+            <td class="type">Date | null</td>
+            <td class="default">—</td>
+            <td class="desc">Destaca a célula como selecionada.</td>
+          </tr>
+          <tr>
+            <td class="name">maxEventsPerDay</td>
+            <td class="type">number</td>
+            <td class="default">3</td>
+            <td class="desc">Acima disso, condensa com "+N mais".</td>
+          </tr>
+          <tr>
+            <td class="name">weekStartsOn</td>
+            <td class="type">0 (dom) | 1 (seg)</td>
+            <td class="default">0</td>
+            <td class="desc">Domingo ou segunda como primeira coluna.</td>
+          </tr>
+          <tr>
+            <td class="name">showWeekNumbers</td>
+            <td class="type">boolean</td>
+            <td class="default">false</td>
+            <td class="desc">Coluna extra com número ISO da semana.</td>
+          </tr>
+          <tr>
+            <td class="name">toolbar</td>
+            <td class="type">boolean</td>
+            <td class="default">true</td>
+            <td class="desc">Header com "Hoje", navegação, título e seletor de visão.</td>
+          </tr>
+          <tr>
+            <td class="name">title</td>
+            <td class="type">string</td>
+            <td class="default">—</td>
+            <td class="desc">Substitui "Mês Ano" no toolbar.</td>
+          </tr>
+          <tr>
+            <td class="name">legend</td>
+            <td class="type">{`{ label, tone }[]`}</td>
+            <td class="default">—</td>
+            <td class="desc">Legenda de tons abaixo do grid.</td>
+          </tr>
+          <tr>
+            <td class="name">today</td>
+            <td class="type">Date</td>
+            <td class="default">new Date()</td>
+            <td class="desc">Relógio injetável (determinismo em testes/previews).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ CALENDAR EVENT ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>CalendarEvent</h2>
+      <small>modelo de evento</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Campo</th><th>Tipo</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">id</td><td class="type">string</td><td class="desc">Chave única.</td></tr>
+          <tr><td class="name">date</td><td class="type">Date | "YYYY-MM-DD"</td><td class="desc">Data de início.</td></tr>
+          <tr><td class="name">endDate</td><td class="type">Date | "YYYY-MM-DD"</td><td class="desc">Data final (multi-dia).</td></tr>
+          <tr><td class="name">title</td><td class="type">ReactNode</td><td class="desc">Texto do evento.</td></tr>
+          <tr><td class="name">tone</td><td class="type">violet | orange | blue | green | red | yellow | neutral</td><td class="desc">Tom semântico da pílula (só tokens; nunca o único sinal).</td></tr>
+          <tr><td class="name">time</td><td class="type">string</td><td class="desc">Horário, ex. "14:00".</td></tr>
+          <tr><td class="name">allDay</td><td class="type">boolean</td><td class="desc">Pílula preenchida com marcador "Dia inteiro".</td></tr>
+          <tr><td class="name">icon</td><td class="type">Componente lucide-react</td><td class="desc">Ícone antes do título.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ SOURCE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Código-fonte</h2>
+      <small>ui_kit/components/calendar/index.tsx</small>
+    </div>
+    <HighlightedCode
+      code={calendarSource}
+      language="tsx"
+      filename="ui_kit/components/calendar/index.tsx"
+      maxHeight="520px"
+      showLineNumbers
+    />
+  </section>
+
+  <!-- ============ A11Y ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Acessibilidade</h2>
+      <small>WCAG 2.1 AA · jest-axe light + dark</small>
+    </div>
+    <div class="a11y">
+      <ul>
+        <li><span><b>Região rotulada</b>: o calendário é um <code class="inline">&lt;section aria-label&gt;</code>; o seletor de visão é um <code class="inline">role="tablist"</code> com <code class="inline">tab</code> + <code class="inline">aria-selected</code>.</span></li>
+        <li><span><b>Sem nested-interactive</b>: a célula de dia não é um botão — o número do dia é o controle de seleção, e as pílulas de evento são botões irmãos (não aninhados). Resolve a violação <code class="inline">nested-interactive</code> da referência legacy.</span></li>
+        <li><span><b>Teclado</b>: navegação (Hoje/anterior/próximo), troca de visão, seleção de dia e clique em evento são todos <code class="inline">&lt;button&gt;</code> nativos — foco visível, Enter/Espaço.</span></li>
+        <li><span><b>Hoje e selecionado anunciados</b>: a célula de hoje recebe <code class="inline">aria-current="date"</code>; o dia selecionado anexa <code class="inline">", selecionado"</code> ao rótulo + <code class="inline">aria-pressed</code>.</span></li>
+        <li><span><b>Cor não é o único sinal</b>: horário e título carregam o significado; eventos all-day mostram "Dia inteiro" em texto.</span></li>
+        <li><span><b>Tokens semânticos</b>: o mapa tom → token usa só tokens Guardia (<code class="inline">--primary</code>, <code class="inline">--success/warning/danger/info</code> e escalas de marca) — zero cor hardcoded; foregrounds solid seguem o padrão AA do Badge.</span></li>
+        <li><span><b>jest-axe</b> cobre mês (com eventos + legenda), mês com dia selecionado, semana e agenda em <code class="inline">light</code> e <code class="inline">dark</code> (ver <code class="inline">Calendar.test.tsx</code>).</span></li>
+      </ul>
+    </div>
+  </section>
+</ComponentPreview>
