@@ -1,0 +1,219 @@
+---
+import ComponentPreview from "../../layouts/ComponentPreview.astro";
+import HighlightedCode from "../../components/HighlightedCode.astro";
+import {
+  BasicBoard,
+  SwimlanesBoard,
+  TotalsBoard,
+  EmptyBoard,
+} from "../../previews/kanban";
+import { LiveKanbanSnippet } from "../../previews/kanban-live";
+import kanbanSource from "@ds/components/kanban/index.tsx?raw";
+---
+
+<ComponentPreview
+  kicker="COMPONENTES · DATA & CONTENT"
+  title="Kanban"
+  group="Data & content"
+  storybookId="components-kanban--default"
+  sourcePath="ui_kit/components/kanban"
+  lede='Board com colunas, cards arrastáveis, swimlanes opcionais e colunas colapsáveis. Use Kanban em pipelines de revisão contábil, gestão de tarefas da equipe e acompanhamento de pendências. Drag-and-drop HTML5 nativo — zero dependência nova. Para uma lista plana com seleção e ordenação use <code class="inline">&lt;DataTable&gt;</code>.'
+>
+  <!-- ============ BASIC ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Padrão</h2>
+      <small>colunas · cards · busca · drag-and-drop</small>
+    </div>
+    <div class="preview">
+      <BasicBoard client:load />
+    </div>
+    <p class="preview-caption">
+      Cada coluna é uma <code class="inline">&lt;section role="region"&gt;</code>
+      rotulada com título + contagem. Cada card é um
+      <code class="inline">&lt;button draggable&gt;</code> acessível por teclado.
+      Arraste um card entre colunas para disparar
+      <code class="inline">onCardMove(cardId, toColumnId, toLaneId, toIndex)</code>.
+      A busca filtra por título, descrição, displayId, responsável e tag.
+    </p>
+  </section>
+
+  <!-- ============ SWIMLANES ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Swimlanes</h2>
+      <small>agrupamento horizontal por cliente / time</small>
+    </div>
+    <div class="preview">
+      <SwimlanesBoard client:load />
+    </div>
+    <p class="preview-caption">
+      Quando <code class="inline">swimlanes</code> é passado, os cards agrupam por
+      <code class="inline">laneId</code> sob cabeçalhos colapsáveis.
+      <code class="inline">defaultCollapsed</code> inicia a lane recolhida. Sem
+      <code class="inline">swimlanes</code>, tudo cai numa lane default sem
+      cabeçalho.
+    </p>
+  </section>
+
+  <!-- ============ TOTALS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Totais & ações</h2>
+      <small>showTotals · sumValue · onAdd · colapsável</small>
+    </div>
+    <div class="preview">
+      <TotalsBoard client:load />
+    </div>
+    <p class="preview-caption">
+      Uma coluna com <code class="inline">showTotals</code> +
+      <code class="inline">sumValue</code> mostra o somatório formatado por
+      <code class="inline">sumFormat</code> no header.
+      <code class="inline">onAdd</code> renderiza a ação "Adicionar card". Clique
+      no cabeçalho da coluna para colapsá-la.
+    </p>
+  </section>
+
+  <!-- ============ EMPTY ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Estado vazio</h2>
+      <small>emptyState por coluna</small>
+    </div>
+    <div class="preview">
+      <EmptyBoard client:load />
+    </div>
+    <p class="preview-caption">
+      Uma coluna sem cards renderiza seu <code class="inline">emptyState</code>
+      (ou a cópia padrão "Sem cards por aqui").
+    </p>
+  </section>
+
+  <!-- ============ PLAYGROUND ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Playground</h2>
+      <small>edite e arraste ao vivo</small>
+    </div>
+    <LiveKanbanSnippet client:load />
+    <p class="preview-caption">
+      Board controlado: <code class="inline">onCardMove</code> reescreve a lista de
+      cards, então o movimento persiste no preview. Arraste os cards entre as
+      colunas.
+    </p>
+  </section>
+
+  <!-- ============ PROPS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Props</h2>
+      <small>API pública</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">columns</td>
+            <td class="type">KanbanColumn[]</td>
+            <td class="default">—</td>
+            <td class="desc">Estrutura fixa das colunas: <code class="inline">{`{ id, title, color?, onAdd?, emptyState?, showTotals?, sumValue?, sumFormat? }`}</code>.</td>
+          </tr>
+          <tr>
+            <td class="name">cards</td>
+            <td class="type">KanbanCard[]</td>
+            <td class="default">—</td>
+            <td class="desc">Lista plana de cards. Cada card tem <code class="inline">columnId</code> e opcionalmente <code class="inline">laneId</code>, além de meta (prioridade, tags, responsável, prazo, valor, confiança, progresso).</td>
+          </tr>
+          <tr>
+            <td class="name">swimlanes</td>
+            <td class="type">KanbanSwimlane[]</td>
+            <td class="default">—</td>
+            <td class="desc">Agrupamentos horizontais. Omitido → lane default única sem cabeçalho.</td>
+          </tr>
+          <tr>
+            <td class="name">searchable</td>
+            <td class="type">boolean</td>
+            <td class="default">false</td>
+            <td class="desc">Renderiza o campo de busca no header e filtra os cards client-side.</td>
+          </tr>
+          <tr>
+            <td class="name">onCardMove</td>
+            <td class="type">(cardId, toColumnId, toLaneId, toIndex) =&gt; void</td>
+            <td class="default">—</td>
+            <td class="desc">Disparado ao soltar um card numa coluna ou zona entre cards. Cobre reordenar dentro da coluna e mover entre colunas/lanes.</td>
+          </tr>
+          <tr>
+            <td class="name">onCardClick</td>
+            <td class="type">(card: KanbanCard) =&gt; void</td>
+            <td class="default">—</td>
+            <td class="desc">Disparado ao ativar um card (clique / Enter / Espaço). Independente do drag.</td>
+          </tr>
+          <tr>
+            <td class="name">renderCard</td>
+            <td class="type">(card, ctx) =&gt; ReactNode</td>
+            <td class="default">—</td>
+            <td class="desc">Substitui o corpo padrão do card por completo. <code class="inline">ctx.dragging</code> indica se o card está sendo arrastado.</td>
+          </tr>
+          <tr>
+            <td class="name">defaultCollapsedColumns</td>
+            <td class="type">string[]</td>
+            <td class="default">—</td>
+            <td class="desc">Ids de colunas que iniciam colapsadas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ DRAG & DROP ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Drag and drop</h2>
+      <small>HTML5 nativo · zero dependência</small>
+    </div>
+    <div class="a11y">
+      <ul>
+        <li><span>Cards usam <code class="inline">draggable</code> + <code class="inline">e.dataTransfer</code> nativos; handlers <code class="inline">onDragStart</code> / <code class="inline">onDragOver</code> / <code class="inline">onDrop</code> / <code class="inline">onDragEnd</code>.</span></li>
+        <li><span>Nenhuma biblioteca de DnD (dnd-kit / react-dnd) foi adicionada — decisão registrada em <code class="inline">ADR-024</code>.</span></li>
+        <li><span>Soltar numa coluna chama <code class="inline">onCardMove</code> com o índice final; soltar numa zona entre cards reordena na posição exata.</span></li>
+        <li><span>O consumidor controla o estado: rearranje <code class="inline">cards</code> no callback para persistir o movimento.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ SOURCE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Código-fonte</h2>
+      <small>ui_kit/components/kanban/index.tsx</small>
+    </div>
+    <HighlightedCode
+      code={kanbanSource}
+      language="tsx"
+      filename="ui_kit/components/kanban/index.tsx"
+      maxHeight="520px"
+      showLineNumbers
+    />
+  </section>
+
+  <!-- ============ A11Y ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Acessibilidade</h2>
+      <small>WCAG 2.1 AA · landmarks · live regions</small>
+    </div>
+    <div class="a11y">
+      <ul>
+        <li><span><b>Navigation landmark</b>: o board é um <code class="inline">&lt;nav aria-label&gt;</code>; cada coluna é uma <code class="inline">&lt;section role="region"&gt;</code> rotulada com título + contagem.</span></li>
+        <li><span><b>Cards são botões</b>: cada card é um <code class="inline">&lt;button draggable&gt;</code> — alcançável por <code class="inline">Tab</code>, ativável por <code class="inline">Enter</code>/<code class="inline">Espaço</code>, com <code class="inline">aria-label</code> = título.</span></li>
+        <li><span><b>Descrição do drag</b>: cada card referencia, via <code class="inline">aria-describedby</code>, um texto visualmente oculto explicando a interação de arrastar.</span></li>
+        <li><span><b>Toggles rotulados</b>: cabeçalhos de coluna e lane são <code class="inline">&lt;button aria-expanded&gt;</code>.</span></li>
+        <li><span><b>Cor não é o único indicador</b>: o ponto de prioridade carrega <code class="inline">aria-label</code>; o status do prazo carrega texto; a confiança do agente mostra o percentual.</span></li>
+        <li><span><b>jest-axe</b> cobre board padrão, board em drag, board com swimlanes e board vazio em <code class="inline">light</code> e <code class="inline">dark</code> (ver <code class="inline">Kanban.test.tsx</code>).</span></li>
+      </ul>
+    </div>
+  </section>
+</ComponentPreview>
