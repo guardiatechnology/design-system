@@ -52,6 +52,7 @@ export * from "./stepper";
 export * from "./switch";
 export * from "./tabs";
 export * from "./textarea";
+export * from "./timeline";
 export * from "./toast";
 export * from "./toggle";
 export * from "./toggle-group";

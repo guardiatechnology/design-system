@@ -1,0 +1,237 @@
+---
+import ComponentPreview from "../../layouts/ComponentPreview.astro";
+import HighlightedCode from "../../components/HighlightedCode.astro";
+import {
+  BasicRow,
+  TonesRow,
+  HorizontalRow,
+  DashedRow,
+  SizesRow,
+  DotFallbackRow,
+} from "../../previews/timeline";
+import timelineSource from "@ds/components/timeline/index.tsx?raw";
+---
+
+<ComponentPreview
+  kicker="COMPONENTES · DATA & CONTENT"
+  title="Timeline"
+  group="Data & content"
+  storybookId="components-timeline--default"
+  sourcePath="ui_kit/components/timeline"
+  lede='Linha do tempo de eventos cronológicos. Use Timeline para histórico temporal com ator, ação e horário — trilha de auditoria de um fechamento, histórico de erro/retry, atividade de agente/usuário. Para progresso em fluxo guiado use <code class="inline">&lt;Stepper&gt;</code>; para listagem não-cronológica use <code class="inline">&lt;DataTable&gt;</code>.'
+>
+  <!-- ============ BASIC ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Padrão</h2>
+      <small>vertical · solid · md</small>
+    </div>
+    <div class="preview">
+      <BasicRow client:load />
+    </div>
+    <p class="preview-caption">
+      Lista <code class="inline">&lt;ol&gt;</code> com
+      <code class="inline">aria-label="Linha do tempo"</code>. Cada evento é um
+      <code class="inline">&lt;li&gt;</code> com marcador (ícone ou dot), título,
+      timestamp à direita, descrição e slot <code class="inline">meta</code>
+      (Badge/ações). O tom (<code class="inline">violet</code> default) pinta o
+      marcador via token semântico.
+    </p>
+  </section>
+
+  <!-- ============ TONES ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Tons</h2>
+      <small>violet · green · amber · red · neutral</small>
+    </div>
+    <div class="preview">
+      <TonesRow client:load />
+    </div>
+    <p class="preview-caption">
+      Cinco tons mapeiam para chains de token semântico —
+      <code class="inline">violet</code> → <code class="inline">--primary</code>
+      (CTA Notion-canonical), <code class="inline">green</code> →
+      <code class="inline">--success</code>, <code class="inline">amber</code> →
+      <code class="inline">--warning</code>, <code class="inline">red</code> →
+      <code class="inline">--danger</code>, <code class="inline">neutral</code> →
+      <code class="inline">--border</code>/<code class="inline">--fg-muted</code>
+      (chain da ADR-011, zero hardcode). A cor nunca é o único indicador: o
+      marcador carrega <code class="inline">data-tone</code>, um rótulo
+      <code class="inline">sr-only</code> (sucesso/atenção/erro/neutro) precede o
+      título e o ícone reforça o significado.
+    </p>
+  </section>
+
+  <!-- ============ HORIZONTAL ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Horizontal</h2>
+      <small>orientation="horizontal"</small>
+    </div>
+    <div class="preview">
+      <HorizontalRow client:load />
+    </div>
+    <p class="preview-caption">
+      Dispõe os eventos numa linha com connector horizontal — útil para headers
+      compactos e resumos de fluxo. Divergência aditiva da referência (que é só
+      vertical), exigida pelo #110 e registrada na ADR-027. O contrato de item
+      (<code class="inline">tone</code>/<code class="inline">icon</code>/<code class="inline">timestamp</code>)
+      é idêntico ao vertical.
+    </p>
+  </section>
+
+  <!-- ============ DASHED ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Connector tracejado</h2>
+      <small>connector="dashed"</small>
+    </div>
+    <div class="preview">
+      <DashedRow client:load />
+    </div>
+    <p class="preview-caption">
+      Linha tracejada para histórico com lacunas temporais ou tentativas. Aqui
+      num fluxo de erro/retry: <code class="inline">neutral</code> →
+      <code class="inline">red</code> → <code class="inline">amber</code> →
+      <code class="inline">green</code>. O connector é sempre neutro
+      (<code class="inline">--border</code>) — Timeline é histórico, não cadeia
+      de progresso.
+    </p>
+  </section>
+
+  <!-- ============ SIZES ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Tamanhos</h2>
+      <small>md (default) · sm</small>
+    </div>
+    <div class="preview">
+      <SizesRow client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">size="md"</code> usa marcador 22×22;
+      <code class="inline">size="sm"</code> reduz para 16×16 com tipografia menor
+      — ideal para sidebars, cards densos e mini-históricos.
+    </p>
+  </section>
+
+  <!-- ============ DOT FALLBACK ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Sem ícone</h2>
+      <small>fallback para dot</small>
+    </div>
+    <div class="preview">
+      <DotFallbackRow client:load />
+    </div>
+    <p class="preview-caption">
+      Quando <code class="inline">item.icon</code> não é fornecido, o marcador
+      mostra um dot decorativo (<code class="inline">bg-current</code>) — exatamente
+      como a referência legacy.
+    </p>
+  </section>
+
+  <!-- ============ PROPS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Props</h2>
+      <small>API pública</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">items</td>
+            <td class="type">TimelineItem[]</td>
+            <td class="default">—</td>
+            <td class="desc">Eventos em ordem cronológica. Cada <code class="inline">TimelineItem</code> traz <code class="inline">{`{ id, title, description?, timestamp?, icon?, tone?, meta? }`}</code>.</td>
+          </tr>
+          <tr>
+            <td class="name">orientation</td>
+            <td class="type">"vertical" | "horizontal"</td>
+            <td class="default">"vertical"</td>
+            <td class="desc">Layout dos eventos + direção do connector.</td>
+          </tr>
+          <tr>
+            <td class="name">size</td>
+            <td class="type">"md" | "sm"</td>
+            <td class="default">"md"</td>
+            <td class="desc">Tamanho do marcador e da tipografia.</td>
+          </tr>
+          <tr>
+            <td class="name">connector</td>
+            <td class="type">"solid" | "dashed"</td>
+            <td class="default">"solid"</td>
+            <td class="desc">Estilo da linha entre marcadores. O último evento não tem connector.</td>
+          </tr>
+          <tr>
+            <td class="name">aria-label</td>
+            <td class="type">string</td>
+            <td class="default">"Linha do tempo"</td>
+            <td class="desc">Rótulo acessível da <code class="inline">&lt;ol&gt;</code>.</td>
+          </tr>
+          <tr>
+            <td class="name">TimelineItem.tone</td>
+            <td class="type">"violet" | "green" | "amber" | "red" | "neutral"</td>
+            <td class="default">"violet"</td>
+            <td class="desc">Tom do marcador, mapeado para token semântico.</td>
+          </tr>
+          <tr>
+            <td class="name">TimelineItem.icon</td>
+            <td class="type">React.ComponentType</td>
+            <td class="default">—</td>
+            <td class="desc">Ícone (<code class="inline">lucide-react</code>-shaped) no marcador. Sem ícone, cai para dot.</td>
+          </tr>
+          <tr>
+            <td class="name">TimelineItem.timestamp</td>
+            <td class="type">ReactNode</td>
+            <td class="default">—</td>
+            <td class="desc">Horário, renderizado ao lado do título (<code class="inline">tabular-nums</code>).</td>
+          </tr>
+          <tr>
+            <td class="name">TimelineItem.meta</td>
+            <td class="type">ReactNode</td>
+            <td class="default">—</td>
+            <td class="desc">Slot abaixo do body — Badges, ações.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ SOURCE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Código-fonte</h2>
+      <small>ui_kit/components/timeline/index.tsx</small>
+    </div>
+    <HighlightedCode
+      code={timelineSource}
+      language="tsx"
+      filename="ui_kit/components/timeline/index.tsx"
+      maxHeight="520px"
+      showLineNumbers
+    />
+  </section>
+
+  <!-- ============ A11Y ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Acessibilidade</h2>
+      <small>WCAG 2.1 AA · lista ordenada · cor não é o único indicador</small>
+    </div>
+    <div class="a11y">
+      <ul>
+        <li><span><b>Lista ordenada</b>: <code class="inline">&lt;ol aria-label="Linha do tempo"&gt;</code> (role <code class="inline">list</code> implícito) garante anúncio correto em screen readers (NVDA, JAWS, VoiceOver).</span></li>
+        <li><span><b>Marcador decorativo</b>: ícone/dot do marcador leva <code class="inline">aria-hidden="true"</code> — o título do evento é a label real.</span></li>
+        <li><span><b>Cor não é o único indicador</b>: o marcador carrega <code class="inline">data-tone</code>; tons ≠ <code class="inline">violet</code> trazem rótulo <code class="inline">sr-only</code> (sucesso/atenção/erro/neutro) antes do título; o ícone reforça o significado.</span></li>
+        <li><span><b>Timestamp tabular</b>: <code class="inline">tabular-nums</code> alinha dígitos em colunas para leitura cronológica.</span></li>
+        <li><span><b>jest-axe</b> cobre timeline vertical multi-tom, horizontal e dashed+sm+red em <code class="inline">light</code> e <code class="inline">dark</code> (ver <code class="inline">Timeline.test.tsx</code>).</span></li>
+      </ul>
+    </div>
+  </section>
+</ComponentPreview>
