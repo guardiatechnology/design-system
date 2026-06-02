@@ -1,0 +1,246 @@
+---
+import ComponentPreview from "../../layouts/ComponentPreview.astro";
+import HighlightedCode from "../../components/HighlightedCode.astro";
+import {
+  BasicRow,
+  SelectableRow,
+  DensitiesRow,
+  EmptyRow,
+  ClickableRow,
+} from "../../previews/data-table";
+import dataTableSource from "@ds/components/data-table/index.tsx?raw";
+---
+
+<ComponentPreview
+  kicker="COMPONENTES · DATA & CONTENT"
+  title="DataTable"
+  group="Data & content"
+  storybookId="components-data-table--default"
+  sourcePath="ui_kit/components/data-table"
+  lede='Tabela de dados com ordenação, seleção em lote e densidade configurável. Use DataTable para listas tabulares de conciliações, lançamentos e grids do Copilot Isac quando o usuário precisa ordenar, selecionar e agir em lote. Wrapper sobre <code class="inline">@tanstack/react-table</code> que compõe os primitivos <code class="inline">&lt;Table&gt;</code> do DS. Para conteúdo composto livre use <code class="inline">&lt;Card&gt;</code>; para navegação paginada combine com <code class="inline">&lt;Pagination&gt;</code>.'
+>
+  <!-- ============ BASIC ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Padrão</h2>
+      <small>ordenação por clique · semântica de tabela real</small>
+    </div>
+    <div class="preview">
+      <BasicRow client:load />
+    </div>
+    <p class="preview-caption">
+      Renderiza <code class="inline">&lt;table&gt;</code> nativo com
+      <code class="inline">&lt;th scope="col"&gt;</code>. Colunas com
+      <code class="inline">sortable</code> viram <code class="inline">&lt;button&gt;</code>
+      no cabeçalho; clicar cicla <code class="inline">asc → desc → none</code> e
+      o <code class="inline">&lt;th&gt;</code> expõe <code class="inline">aria-sort</code>.
+    </p>
+  </section>
+
+  <!-- ============ SELECTABLE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Seleção</h2>
+      <small>selectable · select-all indeterminado · render customizado</small>
+    </div>
+    <div class="preview">
+      <SelectableRow client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">selectable</code> adiciona um checkbox por linha
+      (<code class="inline">Checkbox</code> do DS, rotulado) e o "selecionar
+      todos" no cabeçalho, que entra em estado indeterminado em seleção
+      parcial. Estado controlado via <code class="inline">rowSelection</code> +
+      <code class="inline">onRowSelectionChange</code>; a chave estável vem de
+      <code class="inline">rowKey</code>. Células usam render customizado
+      (<code class="inline">Badge</code> de status, valor formatado em BRL).
+    </p>
+  </section>
+
+  <!-- ============ DENSITIES ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Densidades</h2>
+      <small>compact · normal (default) · comfortable</small>
+    </div>
+    <div class="preview">
+      <DensitiesRow client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">density</code> ajusta o padding das células via CVA.
+      <code class="inline">compact</code> para grids densos;
+      <code class="inline">comfortable</code> quando cada linha precisa respirar.
+    </p>
+  </section>
+
+  <!-- ============ CLICKABLE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Clicável</h2>
+      <small>onRowClick · checkbox não propaga</small>
+    </div>
+    <div class="preview">
+      <ClickableRow client:load />
+    </div>
+    <p class="preview-caption">
+      Com <code class="inline">onRowClick</code> a linha inteira fica clicável
+      (<code class="inline">cursor-pointer</code>). O clique no checkbox de
+      seleção chama <code class="inline">stopPropagation</code> — selecionar não
+      dispara a ação de linha.
+    </p>
+  </section>
+
+  <!-- ============ EMPTY ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Vazio</h2>
+      <small>rows=[] · anúncio acessível</small>
+    </div>
+    <div class="preview">
+      <EmptyRow client:load />
+    </div>
+    <p class="preview-caption">
+      Sem dados, renderiza uma única linha de estado vazio ocupando todas as
+      colunas, com <code class="inline">emptyText</code> dentro de um
+      <code class="inline">role="status" aria-live="polite"</code> para anúncio
+      em screen readers.
+    </p>
+  </section>
+
+  <!-- ============ PROPS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Props</h2>
+      <small>API pública</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">columns</td>
+            <td class="type">DataTableColumn[]</td>
+            <td class="default">—</td>
+            <td class="desc">Definição das colunas: <code class="inline">{`{ id, header, accessorKey?, accessor?, cell?, sortable?, align?, width? }`}</code>.</td>
+          </tr>
+          <tr>
+            <td class="name">rows</td>
+            <td class="type">T[]</td>
+            <td class="default">—</td>
+            <td class="desc">Dados a exibir.</td>
+          </tr>
+          <tr>
+            <td class="name">rowKey</td>
+            <td class="type">(row, i) =&gt; string</td>
+            <td class="default">row.id ?? i</td>
+            <td class="desc">Chave estável de linha (id de seleção do TanStack).</td>
+          </tr>
+          <tr>
+            <td class="name">selectable</td>
+            <td class="type">boolean</td>
+            <td class="default">false</td>
+            <td class="desc">Checkbox por linha + "selecionar todos" no cabeçalho.</td>
+          </tr>
+          <tr>
+            <td class="name">rowSelection / onRowSelectionChange</td>
+            <td class="type">Record&lt;string, boolean&gt;</td>
+            <td class="default">interno</td>
+            <td class="desc">Seleção controlada. Sem isso, gerencia estado interno.</td>
+          </tr>
+          <tr>
+            <td class="name">sorting / defaultSorting / onSortingChange</td>
+            <td class="type">{`{ id, desc }[]`}</td>
+            <td class="default">[]</td>
+            <td class="desc">Ordenação controlada (<code class="inline">sorting</code>) ou inicial (<code class="inline">defaultSorting</code>), no formato do TanStack.</td>
+          </tr>
+          <tr>
+            <td class="name">onRowClick</td>
+            <td class="type">(row) =&gt; void</td>
+            <td class="default">—</td>
+            <td class="desc">Clique na linha. Clique no checkbox não propaga.</td>
+          </tr>
+          <tr>
+            <td class="name">density</td>
+            <td class="type">"compact" | "normal" | "comfortable"</td>
+            <td class="default">"normal"</td>
+            <td class="desc">Padding das células.</td>
+          </tr>
+          <tr>
+            <td class="name">stickyHeader</td>
+            <td class="type">boolean</td>
+            <td class="default">false</td>
+            <td class="desc">Cabeçalho fixo em scroll.</td>
+          </tr>
+          <tr>
+            <td class="name">emptyText</td>
+            <td class="type">ReactNode</td>
+            <td class="default">"Sem dados"</td>
+            <td class="desc">Conteúdo do estado vazio.</td>
+          </tr>
+          <tr>
+            <td class="name">caption</td>
+            <td class="type">ReactNode</td>
+            <td class="default">—</td>
+            <td class="desc"><code class="inline">&lt;caption&gt;</code> só-leitor (descrição da tabela para SR).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ KEYBOARD ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Teclado</h2>
+      <small>navegação acessível</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Tecla</th><th>Ação</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Tab</td><td class="desc">Move foco entre cabeçalhos ordenáveis e checkboxes.</td></tr>
+          <tr><td class="name">Enter</td><td class="desc">Ativa a ordenação no cabeçalho em foco.</td></tr>
+          <tr><td class="name">Space</td><td class="desc">Alterna o checkbox de seleção em foco.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ SOURCE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Código-fonte</h2>
+      <small>ui_kit/components/data-table/index.tsx</small>
+    </div>
+    <HighlightedCode
+      code={dataTableSource}
+      language="tsx"
+      filename="ui_kit/components/data-table/index.tsx"
+      maxHeight="520px"
+      showLineNumbers
+    />
+  </section>
+
+  <!-- ============ A11Y ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Acessibilidade</h2>
+      <small>WCAG 2.1 AA · semântica de tabela</small>
+    </div>
+    <div class="a11y">
+      <ul>
+        <li><span><b>Tabela real</b>: <code class="inline">&lt;table&gt;</code> nativo com <code class="inline">&lt;thead&gt;</code>/<code class="inline">&lt;tbody&gt;</code> e <code class="inline">&lt;th scope="col"&gt;</code> — anúncio correto em NVDA, JAWS, VoiceOver.</span></li>
+        <li><span><b>aria-sort</b>: o cabeçalho ordenável expõe <code class="inline">aria-sort="ascending" | "descending" | "none"</code> refletindo o estado corrente.</span></li>
+        <li><span><b>Ordenação por teclado</b>: cabeçalho ordenável é <code class="inline">&lt;button&gt;</code> focável (Tab) e ativável (Enter/Space), com foco visível (<code class="inline">ring-2 ring-ring</code>).</span></li>
+        <li><span><b>Seleção rotulada</b>: cada checkbox tem <code class="inline">aria-label</code> ("Selecionar linha" / "Selecionar todas as linhas"); a linha selecionada carrega <code class="inline">aria-selected</code>.</span></li>
+        <li><span><b>Estado vazio anunciado</b>: <code class="inline">role="status" aria-live="polite"</code>.</span></li>
+        <li><span><b>Cor não é o único indicador</b>: o ícone de sort (Chevron) acompanha o <code class="inline">aria-sort</code>; status usa <code class="inline">Badge</code> com texto.</span></li>
+        <li><span><b>jest-axe</b> cobre Default, ordenado, seleção (incl. select-all) e vazio em <code class="inline">light</code> e <code class="inline">dark</code> (ver <code class="inline">DataTable.test.tsx</code>).</span></li>
+      </ul>
+    </div>
+  </section>
+</ComponentPreview>
