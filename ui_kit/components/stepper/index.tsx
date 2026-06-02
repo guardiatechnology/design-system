@@ -136,54 +136,54 @@ function connectorClasses(
       ? "after:bg-primary"
       : "after:bg-border";
 
+  // WHY: connector spans center-to-center across both markers (current and next).
+  // Marker has z-10 and solid bg, occluding the line inside its circle — the line
+  // appears to "cut through" each marker's center, giving the canonical stepper visual
+  // of beads on a string. Offsets used to stop at marker edges (legacy behavior).
   if (orientation === "horizontal") {
     if (variant === "compact") {
-      // Compact horizontal: line centered vertically between dots.
-      const compactSize =
-        size === "sm"
-          ? "after:left-[calc(50%+5px)] after:right-[calc(-50%+5px)]"
-          : "after:left-[calc(50%+7px)] after:right-[calc(-50%+7px)]";
+      // Compact horizontal: dot center to next dot center, vertically centered on the dot row.
       return cn(
         'after:content-[""] after:absolute after:top-1/2 after:-translate-y-1/2',
+        "after:left-[50%] after:right-[-50%]",
         "after:h-px after:z-0",
-        compactSize,
         colorClass,
       );
     }
-    // Numbered / Iconed horizontal: line at marker vertical center
-    const offsets =
-      size === "sm"
-        ? "after:top-[10px] after:left-[calc(50%+10px)] after:right-[calc(-50%+10px)]"
-        : "after:top-3 after:left-[calc(50%+12px)] after:right-[calc(-50%+12px)]";
+    // Numbered / Iconed horizontal: marker vertical center; center-to-center span.
+    // Marker (size-6 = 24px / size-5 = 20px) sits after py-1 (4px); vertical center
+    // is 4px + half marker height = 16px (md) / 14px (sm).
+    const verticalOffset = size === "sm" ? "after:top-[14px]" : "after:top-4";
     return cn(
       'after:content-[""] after:absolute',
+      verticalOffset,
+      "after:left-[50%] after:right-[-50%]",
       "after:h-px after:z-0",
-      offsets,
       colorClass,
     );
   }
 
-  // Vertical
+  // Vertical: line at marker horizontal center, spans full li height (top edge to
+  // bottom edge); next li's marker overlays the top of its own connector continuation.
+  // Inner has no horizontal padding, marker starts at li left = 0; horizontal center
+  // is half marker width = 7px (md compact, size-[14px]) / 5px (sm compact, size-[10px])
+  // / 12px (md numbered/iconed, size-6) / 10px (sm numbered/iconed, size-5).
   if (variant === "compact") {
-    const compactSize =
-      size === "sm"
-        ? "after:top-[14px] after:left-[6px]"
-        : "after:top-4 after:left-[7px]";
+    const horizontalOffset = size === "sm" ? "after:left-[5px]" : "after:left-[7px]";
     return cn(
       'after:content-[""] after:absolute',
-      "after:bottom-0 after:w-px after:z-0",
-      compactSize,
+      "after:top-0 after:bottom-0",
+      "after:w-px after:z-0",
+      horizontalOffset,
       colorClass,
     );
   }
-  const offsets =
-    size === "sm"
-      ? "after:top-6 after:left-[9px]"
-      : "after:top-7 after:left-[11px]";
+  const horizontalOffset = size === "sm" ? "after:left-[10px]" : "after:left-[12px]";
   return cn(
     'after:content-[""] after:absolute',
-    "after:bottom-0 after:w-px after:z-0",
-    offsets,
+    "after:top-0 after:bottom-0",
+    "after:w-px after:z-0",
+    horizontalOffset,
     colorClass,
   );
 }
