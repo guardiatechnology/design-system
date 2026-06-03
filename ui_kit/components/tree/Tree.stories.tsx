@@ -218,21 +218,3 @@ export const Empty: Story = {
     </div>
   ),
 };
-
-// ──────────────────────────────────────────────────────────────────
-// Dark — Default in dark theme
-// ──────────────────────────────────────────────────────────────────
-
-export const Dark: Story = {
-  parameters: { backgrounds: { default: "dark" } },
-  render: () => (
-    <div data-theme="dark" className="max-w-sm rounded-lg bg-background p-4">
-      <Tree
-        nodes={accounts}
-        mode="multi"
-        defaultSelected={["1.1.01", "1.1.02"]}
-        aria-label="Plano de contas (dark)"
-      />
-    </div>
-  ),
-};
