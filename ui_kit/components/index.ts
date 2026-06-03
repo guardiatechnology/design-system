@@ -30,6 +30,7 @@ export * from "./input-opt";
 export * from "./label";
 export * from "./menu";
 export * from "./menubar";
+export * from "./metric-card";
 export * from "./multi-select";
 export * from "./navbar";
 export * from "./navigation-menu";
