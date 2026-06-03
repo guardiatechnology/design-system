@@ -62,6 +62,7 @@ export * from "./tooltip";
 export * from "./top-bar";
 export * from "./typography";
 export * from "./table";
+export * from "./data-table";
 export * from "./custom-icons";
 export * from "./calendar";
 export * from "./date-picker";
