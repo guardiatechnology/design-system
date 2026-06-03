@@ -1,0 +1,212 @@
+---
+import ComponentPreview from "../../layouts/ComponentPreview.astro";
+import HighlightedCode from "../../components/HighlightedCode.astro";
+import {
+  BasicRow,
+  GridRow,
+  SizesRow,
+  DeltaRow,
+  ContextRow,
+} from "../../previews/metric-card";
+import metricCardSource from "@ds/components/metric-card/index.tsx?raw";
+---
+
+<ComponentPreview
+  kicker="COMPONENTES · DATA & CONTENT"
+  title="MetricCard"
+  group="Data & content"
+  storybookId="components-metric-card--default"
+  sourcePath="ui_kit/components/metric-card"
+  lede='Card de KPI compacto: rótulo, valor e delta comparativo. Use em dashboards de conciliação, métricas de agentes e indicadores financeiros. O sinal do delta deriva o tom (verde/vermelho), mas a direção <b>nunca</b> depende só de cor — vem com ícone (<code class="inline">↗/↘</code>), sinal textual (<code class="inline">+/-</code>) e <code class="inline">aria-label</code>. Para séries temporais use <code class="inline">&lt;Chart&gt;</code>; para um container genérico use <code class="inline">&lt;Card&gt;</code> (que MetricCard compõe).'
+>
+  <!-- ============ BASIC ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Padrão</h2>
+      <small>ícone · valor · delta · caption</small>
+    </div>
+    <div class="preview">
+      <BasicRow client:load />
+    </div>
+    <p class="preview-caption">
+      O <code class="inline">label</code> (rótulo em maiúsculas) nomeia a métrica;
+      o <code class="inline">value</code> é o número grande central com
+      <code class="inline">tabular-nums</code>. O <code class="inline">delta</code>
+      numérico é formatado como porcentagem pt-BR com sinal
+      (<code class="inline">+12,4%</code>). O card todo é um
+      <code class="inline">role="group"</code> rotulado pelo
+      <code class="inline">label</code>.
+    </p>
+  </section>
+
+  <!-- ============ GRID ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Grid de KPIs</h2>
+      <small>linha típica de dashboard</small>
+    </div>
+    <div class="preview">
+      <GridRow client:load />
+    </div>
+    <p class="preview-caption">
+      Em dashboards de conciliação, alinhe até 4 MetricCards numa fila.
+      Cada card consome o primitivo <code class="inline">&lt;Card&gt;</code>
+      (mesma superfície, borda e radius do resto do catálogo).
+    </p>
+  </section>
+
+  <!-- ============ SIZES ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Tamanhos</h2>
+      <small>sm · md (default) · lg</small>
+    </div>
+    <div class="preview">
+      <SizesRow client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">size</code> escala o padding e o tamanho do valor
+      (24 / 30 / 36px). Use <code class="inline">sm</code> em mini-indicadores
+      dentro de cards densos; <code class="inline">lg</code> para o KPI-herói
+      de uma seção.
+    </p>
+  </section>
+
+  <!-- ============ DELTA TONES ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Tons de delta</h2>
+      <small>up · down · neutral · string custom</small>
+    </div>
+    <div class="preview">
+      <DeltaRow client:load />
+    </div>
+    <p class="preview-caption">
+      O tom é derivado do sinal: <code class="inline">&gt;0</code> →
+      <code class="inline">up</code> (<code class="inline">success-fg/soft</code>);
+      <code class="inline">&lt;0</code> → <code class="inline">down</code>
+      (<code class="inline">danger-fg/soft</code>);
+      <code class="inline">0</code> ou string → <code class="inline">neutral</code>
+      (<code class="inline">muted</code>). Passe
+      <code class="inline">deltaType</code> para sobrepor. Os tokens
+      <code class="inline">*-fg</code> sobre <code class="inline">*-soft</code>
+      garantem contraste AAA — a direção também vem por ícone + sinal, nunca
+      só por cor.
+    </p>
+  </section>
+
+  <!-- ============ CONTEXT / MONETARY ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Sem delta · monetário</h2>
+      <small>contexto via caption · prefix/suffix</small>
+    </div>
+    <div class="preview">
+      <ContextRow client:load />
+    </div>
+    <p class="preview-caption">
+      Sem <code class="inline">delta</code>, o card vira um indicador de
+      contexto (use <code class="inline">caption</code> para o complemento).
+      <code class="inline">prefix</code>/<code class="inline">suffix</code>
+      cercam o valor (<code class="inline">R$ </code>, <code class="inline"> mi</code>,
+      <code class="inline">%</code>, <code class="inline">h</code>) em peso menor.
+    </p>
+  </section>
+
+  <!-- ============ PROPS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Props</h2>
+      <small>API pública</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">label</td>
+            <td class="type">ReactNode</td>
+            <td class="default">—</td>
+            <td class="desc">Rótulo (maiúsculas, acima). É o nome acessível da métrica.</td>
+          </tr>
+          <tr>
+            <td class="name">value</td>
+            <td class="type">ReactNode</td>
+            <td class="default">—</td>
+            <td class="desc">Número grande central.</td>
+          </tr>
+          <tr>
+            <td class="name">prefix · suffix</td>
+            <td class="type">ReactNode</td>
+            <td class="default">—</td>
+            <td class="desc">Cercam o valor (ex.: <code class="inline">"R$ "</code>, <code class="inline">"%"</code>, <code class="inline">" h"</code>).</td>
+          </tr>
+          <tr>
+            <td class="name">delta</td>
+            <td class="type">number | string</td>
+            <td class="default">—</td>
+            <td class="desc">Variação. <code class="inline">number</code> ⇒ formatado com sinal + %; <code class="inline">string</code> ⇒ exibido como veio.</td>
+          </tr>
+          <tr>
+            <td class="name">deltaType</td>
+            <td class="type">"up" | "down" | "neutral"</td>
+            <td class="default">derivado do sinal</td>
+            <td class="desc">Sobrepõe o tom derivado do sinal do delta.</td>
+          </tr>
+          <tr>
+            <td class="name">caption</td>
+            <td class="type">ReactNode</td>
+            <td class="default">—</td>
+            <td class="desc">Legenda complementar no rodapé (ex.: período comparado).</td>
+          </tr>
+          <tr>
+            <td class="name">icon</td>
+            <td class="type">React.ComponentType</td>
+            <td class="default">—</td>
+            <td class="desc">Ícone (<code class="inline">lucide-react</code>-shaped) no chip superior direito. Decorativo (<code class="inline">aria-hidden</code>).</td>
+          </tr>
+          <tr>
+            <td class="name">size</td>
+            <td class="type">"sm" | "md" | "lg"</td>
+            <td class="default">"md"</td>
+            <td class="desc">Escala padding + tamanho do valor.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ SOURCE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Código-fonte</h2>
+      <small>ui_kit/components/metric-card/index.tsx</small>
+    </div>
+    <HighlightedCode
+      code={metricCardSource}
+      language="tsx"
+      filename="ui_kit/components/metric-card/index.tsx"
+      maxHeight="520px"
+      showLineNumbers
+    />
+  </section>
+
+  <!-- ============ A11Y ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Acessibilidade</h2>
+      <small>WCAG 2.1 AA · cor nunca é o único indicador</small>
+    </div>
+    <div class="a11y">
+      <ul>
+        <li><span><b>KPI rotulado</b>: o card é um <code class="inline">role="group"</code> com <code class="inline">aria-labelledby</code> apontando para o <code class="inline">label</code> — a métrica é anunciada como uma unidade.</span></li>
+        <li><span><b>Direção sem cor</b>: o delta combina ícone direcional (<code class="inline">TrendingUp</code>/<code class="inline">TrendingDown</code>), sinal textual (<code class="inline">+</code>/<code class="inline">-</code>) e <code class="inline">aria-label</code> (&quot;aumento de X%&quot; / &quot;queda de X%&quot;) — atende WCAG 1.4.1.</span></li>
+        <li><span><b>Contraste AAA</b>: tons usam <code class="inline">success-fg</code>/<code class="inline">danger-fg</code> sobre <code class="inline">*-soft</code> (≥ 6,6:1), nunca <code class="inline">--signal-*</code> cru sobre a superfície.</span></li>
+        <li><span><b>Ícone decorativo</b>: o chip de ícone leva <code class="inline">aria-hidden="true"</code> — não compete com o rótulo no screen reader.</span></li>
+        <li><span><b>jest-axe</b> cobre Default (ícone + delta), down-tone e sem-delta em <code class="inline">light</code> e <code class="inline">dark</code> (ver <code class="inline">MetricCard.test.tsx</code>).</span></li>
+      </ul>
+    </div>
+  </section>
+</ComponentPreview>
