@@ -68,3 +68,4 @@ export * from "./calendar";
 export * from "./date-picker";
 export * from "./file-upload";
 export * from "./form-layout";
+export * from "./tree";
