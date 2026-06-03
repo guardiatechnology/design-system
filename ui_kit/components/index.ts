@@ -35,6 +35,7 @@ export * from "./navbar";
 export * from "./navigation-menu";
 export * from "./pagination";
 export * from "./popover";
+export * from "./progress";
 export * from "./radio";
 export * from "./scroll-area";
 export * from "./select";
