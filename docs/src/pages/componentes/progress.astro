@@ -1,0 +1,227 @@
+---
+import ComponentPreview from "../../layouts/ComponentPreview.astro";
+import HighlightedCode from "../../components/HighlightedCode.astro";
+import {
+  BasicRow,
+  TonesRow,
+  SizesRow,
+  IndeterminateRow,
+  CircularRow,
+  CircularIndeterminateRow,
+} from "../../previews/progress";
+import progressSource from "@ds/components/progress/index.tsx?raw";
+---
+
+<ComponentPreview
+  kicker="COMPONENTES · DATA & CONTENT"
+  title="Progress"
+  group="Data & content"
+  storybookId="components-progress--default"
+  sourcePath="ui_kit/components/progress"
+  lede='Indicador de progresso contínuo. Use <code class="inline">&lt;Progress&gt;</code> para sinalizar o andamento de tarefas de duração conhecida (determinate) ou desconhecida (indeterminate) — upload de extratos, conciliação em lote, processamento longo do Copilot Isac. Para progresso discreto multi-etapa use <code class="inline">&lt;Stepper&gt;</code>; para loading pontual inline use <code class="inline">&lt;Spinner&gt;</code>.'
+>
+  <!-- ============ BASIC ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Padrão</h2>
+      <small>linear · determinate · violet · md</small>
+    </div>
+    <div class="preview">
+      <BasicRow client:load />
+    </div>
+    <p class="preview-caption">
+      A barra é uma <code class="inline">&lt;div role="progressbar"&gt;</code>
+      com <code class="inline">aria-valuenow</code> (percentual arredondado),
+      <code class="inline">aria-valuemin=0</code> e
+      <code class="inline">aria-valuemax=100</code>. O <code class="inline">label</code>
+      nomeia a barra via <code class="inline">aria-labelledby</code>;
+      <code class="inline">showValue</code> renderiza o percentual.
+    </p>
+  </section>
+
+  <!-- ============ TONS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Tons</h2>
+      <small>violet · green · amber · red</small>
+    </div>
+    <div class="preview">
+      <TonesRow client:load />
+    </div>
+    <p class="preview-caption">
+      Quatro tons mapeiam tokens semânticos: <code class="inline">violet</code>
+      consome <code class="inline">--primary</code> (CTA Notion-canonical),
+      <code class="inline">green/amber/red</code> consomem
+      <code class="inline">--success/--warning/--danger</code> (chain ADR-011,
+      paridade dark herdada) — zero hardcode.
+    </p>
+  </section>
+
+  <!-- ============ TAMANHOS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Tamanhos</h2>
+      <small>sm · md (default) · lg</small>
+    </div>
+    <div class="preview">
+      <SizesRow client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">sm</code> usa track 4px; <code class="inline">md</code>
+      6px; <code class="inline">lg</code> 10px. No circular o tamanho controla
+      diâmetro (36 / 48 / 64px) e espessura do traço (3 / 4 / 5px).
+    </p>
+  </section>
+
+  <!-- ============ INDETERMINATE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Indeterminate</h2>
+      <small>duração desconhecida</small>
+    </div>
+    <div class="preview">
+      <IndeterminateRow client:load />
+    </div>
+    <p class="preview-caption">
+      Quando a duração é desconhecida, <code class="inline">indeterminate</code>
+      anima um preenchimento parcial deslizante e omite
+      <code class="inline">aria-valuenow</code> (mantém
+      <code class="inline">role</code> + min/max) — sinaliza "ocupado, sem
+      percentual". A animação respeita <code class="inline">prefers-reduced-motion</code>
+      via <code class="inline">motion-safe</code>.
+    </p>
+  </section>
+
+  <!-- ============ CIRCULAR ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Circular</h2>
+      <small>variant="circular" · determinate</small>
+    </div>
+    <div class="preview">
+      <CircularRow client:load />
+    </div>
+    <p class="preview-caption">
+      A variante circular desenha um anel de fundo
+      (<code class="inline">--muted</code>) + arco
+      (<code class="inline">stroke-dasharray</code> proporcional ao percentual).
+      Carrega o mesmo contrato ARIA do linear (divergência justificada vs. a
+      referência, que omite ARIA no circular — ver ADR-026).
+    </p>
+  </section>
+
+  <!-- ============ CIRCULAR INDETERMINATE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Circular indeterminate</h2>
+      <small>variant="circular" · indeterminate</small>
+    </div>
+    <div class="preview">
+      <CircularIndeterminateRow client:load />
+    </div>
+    <p class="preview-caption">
+      O circular indeterminate gira um arco de 25% via
+      <code class="inline">motion-safe:animate-spin</code> — útil quando o
+      progresso ainda não é mensurável.
+    </p>
+  </section>
+
+  <!-- ============ PROPS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Props</h2>
+      <small>API pública</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">value</td>
+            <td class="type">number</td>
+            <td class="default">0</td>
+            <td class="desc">Valor atual (0..max). Ignorado quando <code class="inline">indeterminate</code>. Clampado a 0–100%.</td>
+          </tr>
+          <tr>
+            <td class="name">max</td>
+            <td class="type">number</td>
+            <td class="default">100</td>
+            <td class="desc">Limite superior de <code class="inline">value</code>. Valor não-positivo cai para 100 (sem divisão por zero).</td>
+          </tr>
+          <tr>
+            <td class="name">variant</td>
+            <td class="type">"linear" | "circular"</td>
+            <td class="default">"linear"</td>
+            <td class="desc">Layout do indicador.</td>
+          </tr>
+          <tr>
+            <td class="name">tone</td>
+            <td class="type">"violet" | "green" | "amber" | "red"</td>
+            <td class="default">"violet"</td>
+            <td class="desc">Cor do preenchimento (token semântico).</td>
+          </tr>
+          <tr>
+            <td class="name">size</td>
+            <td class="type">"sm" | "md" | "lg"</td>
+            <td class="default">"md"</td>
+            <td class="desc">Altura da barra (linear) ou diâmetro + traço (circular).</td>
+          </tr>
+          <tr>
+            <td class="name">label</td>
+            <td class="type">ReactNode</td>
+            <td class="default">—</td>
+            <td class="desc">Rótulo acessível. Nomeia a barra via <code class="inline">aria-labelledby</code>.</td>
+          </tr>
+          <tr>
+            <td class="name">showValue</td>
+            <td class="type">boolean</td>
+            <td class="default">false</td>
+            <td class="desc">Renderiza o percentual arredondado. Suprimido em <code class="inline">indeterminate</code>.</td>
+          </tr>
+          <tr>
+            <td class="name">indeterminate</td>
+            <td class="type">boolean</td>
+            <td class="default">false</td>
+            <td class="desc">Estado contínuo de duração desconhecida. Omite <code class="inline">aria-valuenow</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ SOURCE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Código-fonte</h2>
+      <small>ui_kit/components/progress/index.tsx</small>
+    </div>
+    <HighlightedCode
+      code={progressSource}
+      language="tsx"
+      filename="ui_kit/components/progress/index.tsx"
+      maxHeight="520px"
+      showLineNumbers
+    />
+  </section>
+
+  <!-- ============ A11Y ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Acessibilidade</h2>
+      <small>WCAG 2.1 AA · ARIA progressbar</small>
+    </div>
+    <div class="a11y">
+      <ul>
+        <li><span><b>role="progressbar"</b>: linear e circular carregam <code class="inline">role="progressbar"</code> + <code class="inline">aria-valuemin/valuemax</code>.</span></li>
+        <li><span><b>aria-valuenow</b>: presente no determinate (percentual arredondado); omitido no <code class="inline">indeterminate</code> (sinaliza completion desconhecido).</span></li>
+        <li><span><b>Barra nomeada</b>: <code class="inline">label</code> linka via <code class="inline">aria-labelledby</code>; no circular o label fica <code class="inline">sr-only</code>.</span></li>
+        <li><span><b>SVG decorativo</b>: o SVG do circular leva <code class="inline">aria-hidden="true"</code> — o anúncio vem do <code class="inline">role</code> + <code class="inline">aria-valuenow</code>.</span></li>
+        <li><span><b>Reduced motion</b>: animações (slide indeterminate, spin circular, transição de fill) usam <code class="inline">motion-safe</code>.</span></li>
+        <li><span><b>Contraste</b>: o fill é elemento UI não-textual (WCAG 1.4.11, 3:1); o readout usa <code class="inline">--fg/--fg-muted</code> (AAA).</span></li>
+        <li><span><b>jest-axe</b> cobre linear determinate, circular determinate, indeterminate e os 4 tons em <code class="inline">light</code> e <code class="inline">dark</code> (ver <code class="inline">Progress.test.tsx</code>).</span></li>
+      </ul>
+    </div>
+  </section>
+</ComponentPreview>
