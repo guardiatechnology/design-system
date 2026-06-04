@@ -27,6 +27,7 @@ export * from "./form";
 export * from "./icon-button";
 export * from "./input";
 export * from "./input-opt";
+export * from "./kanban";
 export * from "./label";
 export * from "./menu";
 export * from "./menubar";
