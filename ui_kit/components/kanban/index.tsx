@@ -268,7 +268,7 @@ const Kanban = React.forwardRef<HTMLDivElement, KanbanProps>(function Kanban(
   return (
     <div
       ref={ref}
-      className={cn("flex min-h-0 flex-col font-sans text-fg", className)}
+      className={cn("flex w-full min-w-0 min-h-0 flex-col font-sans text-fg", className)}
       {...rest}
     >
       <span id={dragHintId} className="sr-only">
@@ -301,7 +301,7 @@ const Kanban = React.forwardRef<HTMLDivElement, KanbanProps>(function Kanban(
 
       <nav
         aria-label={ariaLabel}
-        className="flex min-h-0 flex-col gap-[22px]"
+        className="flex min-w-0 min-h-0 flex-col gap-[22px]"
       >
         {lanes.map((lane) => {
           const laneIsCollapsed = collapsedLanes.has(lane.id);
@@ -313,7 +313,7 @@ const Kanban = React.forwardRef<HTMLDivElement, KanbanProps>(function Kanban(
           const showLaneHdr = lane.id !== DEFAULT_LANE_ID;
 
           return (
-            <div key={lane.id} className="flex min-h-0 flex-col gap-2">
+            <div key={lane.id} className="flex min-w-0 min-h-0 flex-col gap-2">
               {showLaneHdr && (
                 <button
                   type="button"
