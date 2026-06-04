@@ -70,3 +70,4 @@ export * from "./date-picker";
 export * from "./file-upload";
 export * from "./form-layout";
 export * from "./tree";
+export * from "./logo";
