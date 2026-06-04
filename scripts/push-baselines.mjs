@@ -29,7 +29,15 @@ if (!GH_TOKEN || !BRANCH || !GITHUB_REPOSITORY) {
 
 const [owner, repo] = GITHUB_REPOSITORY.split("/");
 
-async function gh(method, endpoint, body) {
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Max retry attempts for a single request when GitHub returns a secondary
+// rate-limit response. A regenerate run that touches hundreds of baselines
+// (e.g. a global font/theme change) creates one blob per file; without
+// backoff the burst trips the limit and fails the whole push.
+const MAX_RETRIES = 8;
+
+async function gh(method, endpoint, body, attempt = 1) {
   const res = await fetch(`https://api.github.com${endpoint}`, {
     method,
     headers: {
@@ -40,13 +48,37 @@ async function gh(method, endpoint, body) {
     },
     body: body ? JSON.stringify(body) : undefined,
   });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(
-      `GitHub API ${method} ${endpoint} failed: ${res.status} ${text}`,
-    );
+  if (res.ok) {
+    return res.json();
   }
-  return res.json();
+
+  const text = await res.text();
+
+  // Retry on secondary rate limits (GitHub returns 403 or 429 with a body
+  // mentioning the limit). Honor `Retry-After` when present; otherwise back
+  // off exponentially with jitter. Primary 4xx/5xx errors are not retried.
+  const isRateLimited =
+    (res.status === 403 || res.status === 429) &&
+    /secondary rate limit|rate limit/i.test(text);
+  if (isRateLimited && attempt <= MAX_RETRIES) {
+    const retryAfter = Number(res.headers.get("retry-after"));
+    const waitMs =
+      Number.isFinite(retryAfter) && retryAfter > 0
+        ? retryAfter * 1000
+        : Math.min(60000, 2 ** attempt * 1000) +
+          Math.floor(Math.random() * 1000);
+    console.log(
+      `Rate limited on ${method} ${endpoint} (attempt ${attempt}/${MAX_RETRIES}); waiting ${Math.round(
+        waitMs / 1000,
+      )}s before retry`,
+    );
+    await sleep(waitMs);
+    return gh(method, endpoint, body, attempt + 1);
+  }
+
+  throw new Error(
+    `GitHub API ${method} ${endpoint} failed: ${res.status} ${text}`,
+  );
 }
 
 // 1. List PNG changes (added, modified, deleted) under __image_snapshots__/.
@@ -89,12 +121,20 @@ const headCommit = await gh(
 );
 const baseTreeSha = headCommit.tree.sha;
 
-// 3. Upload each PNG as a blob; collect tree entries (chunked parallel to
-//    stay within GitHub API secondary-rate limits — sequential would be
-//    ~1 req/200ms × 400+ files = >1min wall time).
-const CHUNK_SIZE = 10;
+// 3. Upload each PNG as a blob; collect tree entries. Blob creation is a
+//    content-mutating POST, which GitHub guards with a secondary rate limit.
+//    GitHub's guidance is to send such requests with low concurrency and a
+//    short pause between batches. We upload in small chunks with an
+//    inter-chunk delay; the gh() helper retries with backoff if the limit is
+//    still hit, so a large regenerate (hundreds of files) completes reliably
+//    instead of failing the whole push.
+const CHUNK_SIZE = 3;
+const CHUNK_DELAY_MS = 1200;
 const treeEntries = [];
 for (let i = 0; i < changed.length; i += CHUNK_SIZE) {
+  if (i > 0) {
+    await sleep(CHUNK_DELAY_MS);
+  }
   const chunk = changed.slice(i, i + CHUNK_SIZE);
   const results = await Promise.all(
     chunk.map(async ({ status, path }) => {

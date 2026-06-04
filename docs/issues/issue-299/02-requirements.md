@@ -8,6 +8,11 @@
 - **AC-2** — No `@import` (font, `tailwindcss`, or `tw-animate-css`) is removed; the font CDN convenience is preserved. The Poppins + Roboto families and weights in the URL are unchanged.
 - **AC-3** — An automated test asserts the ordering invariant: the index of the font `@import url(` is lower than the index of the first `@source` and the first `@custom-variant` occurrence in `ui_kit/styles/index.css`. The test fails on the pre-fix ordering and passes after the fix (guards against regression).
 - **AC-4** — `npm run build` reproduces the corrected ordering in `dist/styles/index.css` (the copied artifact matches the source).
+- **AC-5** *(scope expansion — see note)* — The visual baselines can be regenerated and pushed by the CI flow despite this fix changing 214 baselines at once. `scripts/push-baselines.mjs` paces blob creation and retries on GitHub secondary rate limits, so a large regenerate completes instead of failing on a 403.
+
+## Scope expansion (recorded)
+
+The font fix makes Poppins load across nearly every story, so the `regenerate-baselines` flow must push **214** baselines in one run. The existing `scripts/push-baselines.mjs` bursts one blob POST per file and trips GitHub's secondary rate limit (403). On 2026-06-04 the human owner explicitly chose to fix the push script **on this branch** (rather than a separate issue) so the PR's own regenerate run can succeed. AC-5 captures that decision.
 
 ## Definition of Done
 
