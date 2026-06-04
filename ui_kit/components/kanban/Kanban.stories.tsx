@@ -225,25 +225,3 @@ export const TotalsAndActions: Story = {
     },
   },
 };
-
-// ──────────────────────────────────────────────────────────────────
-// Dark — contrato visual sobre fundo escuro
-// ──────────────────────────────────────────────────────────────────
-
-export const DarkTheme: Story = {
-  globals: { theme: "dark" },
-  parameters: {
-    backgrounds: { default: "dark" },
-    docs: {
-      description: {
-        story:
-          "Mesmo board sobre fundo Mono Black. Tokens semânticos trocam automaticamente (`--action` vira orange, surfaces viram gray-700/800), mantendo WCAG AA em prioridade, prazo e confiança do agente. Toggle de tema também disponível na toolbar.",
-      },
-    },
-  },
-  render: () => (
-    <div className="bg-bg p-4">
-      <InteractiveBoard searchable />
-    </div>
-  ),
-};
