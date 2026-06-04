@@ -1,0 +1,257 @@
+---
+import ComponentPreview from "../../layouts/ComponentPreview.astro";
+import HighlightedCode from "../../components/HighlightedCode.astro";
+import {
+  BasicTree,
+  MultiTree,
+  NavigationTree,
+  SizesTree,
+  IconsTree,
+  WithoutLinesTree,
+} from "../../previews/tree";
+import { LiveTreeSnippet } from "../../previews/tree-live";
+import treeSource from "@ds/components/tree/index.tsx?raw";
+---
+
+<ComponentPreview
+  kicker="COMPONENTES · DATA & CONTENT"
+  title="Tree"
+  group="Dados & conteúdo"
+  storybookId="components-tree--default"
+  sourcePath="ui_kit/components/tree"
+  lede='Navegador hierárquico com expand/collapse, seleção e navegação por teclado completa (ARIA APG Tree View). Use Tree em plano de contas, estrutura de empresas, categorias fiscais aninhadas e regras do Copilot Isac. Para listas planas com seleção use <code class="inline">&lt;Menu&gt;</code>; para escolha única em formulário use <code class="inline">&lt;Select&gt;</code>.'
+>
+  <!-- ============ BASIC ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Padrão</h2>
+      <small>single · md</small>
+    </div>
+    <div class="preview">
+      <BasicTree client:load />
+    </div>
+    <p class="preview-caption">
+      Lista <code class="inline">&lt;ul role="tree"&gt;</code> de
+      <code class="inline">&lt;li role="treeitem"&gt;</code>; filhos vivem em
+      <code class="inline">role="group"</code>. O nó selecionado recebe
+      <code class="inline">aria-selected="true"</code>; pais carregam
+      <code class="inline">aria-expanded</code>. Use as setas para navegar
+      (<code class="inline">↑/↓</code> move, <code class="inline">→</code>
+      expande/entra, <code class="inline">←</code> colapsa/sobe).
+    </p>
+  </section>
+
+  <!-- ============ MULTI ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Multi seleção</h2>
+      <small>mode="multi" · tri-state</small>
+    </div>
+    <div class="preview">
+      <MultiTree client:load />
+    </div>
+    <p class="preview-caption">
+      Em <code class="inline">mode="multi"</code> cada nó ganha um checkbox.
+      Marcar um pai marca todas as folhas descendentes; o estado do pai é
+      derivado (<code class="inline">all</code>/<code class="inline">partial</code>/<code
+        class="inline">none</code>) e o parcial é exposto via
+      <code class="inline">aria-checked="mixed"</code>.
+    </p>
+  </section>
+
+  <!-- ============ NONE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Navegação</h2>
+      <small>mode="none" · só expand</small>
+    </div>
+    <div class="preview">
+      <NavigationTree client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">mode="none"</code> remove a seleção — o Tree vira um
+      navegador puro (expand/collapse + teclado). Use para árvores que servem
+      apenas de mapa (estrutura de empresas, hierarquia organizacional).
+    </p>
+  </section>
+
+  <!-- ============ SIZES ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Tamanhos</h2>
+      <small>md (default) · sm</small>
+    </div>
+    <div class="preview">
+      <SizesTree client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">size="md"</code> usa linhas de 30px;
+      <code class="inline">size="sm"</code> compacta para 26px com indent e
+      espaçamento reduzidos — ideal para sidebars e painéis densos.
+    </p>
+  </section>
+
+  <!-- ============ ICONS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Ícones + meta</h2>
+      <small>icon · meta · description</small>
+    </div>
+    <div class="preview">
+      <IconsTree client:load />
+    </div>
+    <p class="preview-caption">
+      Cada <code class="inline">TreeNode</code> aceita
+      <code class="inline">icon</code> (componente
+      <code class="inline">lucide-react</code>-shaped),
+      <code class="inline">meta</code> (slot à direita: valor, badge) e
+      <code class="inline">description</code> (texto secundário muted).
+    </p>
+  </section>
+
+  <!-- ============ NO LINES ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Sem linhas guia</h2>
+      <small>showLines={false}</small>
+    </div>
+    <div class="preview">
+      <WithoutLinesTree client:load />
+    </div>
+    <p class="preview-caption">
+      As linhas guia verticais (<code class="inline">showLines</code>, default
+      <code class="inline">true</code>) ajudam a ler a hierarquia. Desligue-as
+      em árvores rasas onde o indent já basta.
+    </p>
+  </section>
+
+  <!-- ============ PLAYGROUND ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Playground</h2>
+      <small>edite e veja ao vivo</small>
+    </div>
+    <LiveTreeSnippet client:load />
+  </section>
+
+  <!-- ============ PROPS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Props</h2>
+      <small>API pública</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">nodes</td>
+            <td class="type">TreeNode[]</td>
+            <td class="default">—</td>
+            <td class="desc">Lista hierárquica. Cada <code class="inline">TreeNode</code> traz <code class="inline">{`{ id, label, description?, icon?, meta?, disabled?, children?, defaultExpanded? }`}</code>.</td>
+          </tr>
+          <tr>
+            <td class="name">mode</td>
+            <td class="type">"none" | "single" | "multi"</td>
+            <td class="default">"single"</td>
+            <td class="desc">Modelo de seleção. <code class="inline">multi</code> deriva o estado dos pais das folhas.</td>
+          </tr>
+          <tr>
+            <td class="name">size</td>
+            <td class="type">"md" | "sm"</td>
+            <td class="default">"md"</td>
+            <td class="desc">Densidade das linhas + indent.</td>
+          </tr>
+          <tr>
+            <td class="name">expanded / onExpandedChange</td>
+            <td class="type">string[] / (ids) =&gt; void</td>
+            <td class="default">—</td>
+            <td class="desc">Expansão controlada. Omita para usar estado interno (<code class="inline">defaultExpanded</code>).</td>
+          </tr>
+          <tr>
+            <td class="name">selected / onSelectedChange</td>
+            <td class="type">string[] / (ids) =&gt; void</td>
+            <td class="default">—</td>
+            <td class="desc">Seleção controlada. Omita para usar estado interno (<code class="inline">defaultSelected</code>).</td>
+          </tr>
+          <tr>
+            <td class="name">showLines</td>
+            <td class="type">boolean</td>
+            <td class="default">true</td>
+            <td class="desc">Linhas guia verticais nos grupos.</td>
+          </tr>
+          <tr>
+            <td class="name">onNodeClick</td>
+            <td class="type">(node: TreeNode) =&gt; void</td>
+            <td class="default">—</td>
+            <td class="desc">Dispara em toda ativação de nó, independente do <code class="inline">mode</code>.</td>
+          </tr>
+          <tr>
+            <td class="name">emptyState</td>
+            <td class="type">ReactNode</td>
+            <td class="default">"Nenhum item."</td>
+            <td class="desc">Renderizado quando <code class="inline">nodes</code> está vazio.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ KEYBOARD ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Teclado</h2>
+      <small>ARIA APG Tree View</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Tecla</th><th>Ação</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">↓ / ↑</td><td class="desc">Move o foco para o próximo / anterior item visível (pula subárvores colapsadas).</td></tr>
+          <tr><td class="name">→</td><td class="desc">Expande um pai colapsado; em um pai já expandido, entra no primeiro filho.</td></tr>
+          <tr><td class="name">←</td><td class="desc">Colapsa um pai expandido; em um filho/folha, sobe para o pai.</td></tr>
+          <tr><td class="name">Home / End</td><td class="desc">Foco no primeiro / último item visível.</td></tr>
+          <tr><td class="name">Enter / Space</td><td class="desc">Seleciona (ou alterna, em multi) o item em foco.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ SOURCE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Código-fonte</h2>
+      <small>ui_kit/components/tree/index.tsx</small>
+    </div>
+    <HighlightedCode
+      code={treeSource}
+      language="tsx"
+      filename="ui_kit/components/tree/index.tsx"
+      maxHeight="520px"
+      showLineNumbers
+    />
+  </section>
+
+  <!-- ============ A11Y ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Acessibilidade</h2>
+      <small>WCAG 2.1 AA · APG Tree View</small>
+    </div>
+    <div class="a11y">
+      <ul>
+        <li><span><b>Padrão APG</b>: <code class="inline">&lt;ul role="tree"&gt;</code> + <code class="inline">&lt;li role="treeitem"&gt;</code> + <code class="inline">role="group"</code> nos filhos, conforme o ARIA Authoring Practices Tree View.</span></li>
+        <li><span><b>Estado exposto</b>: pais carregam <code class="inline">aria-expanded</code>; itens selecionados carregam <code class="inline">aria-selected</code>; o checkbox parcial em multi expõe <code class="inline">aria-checked="mixed"</code>.</span></li>
+        <li><span><b>Roving tabindex</b>: exatamente um <code class="inline">treeitem</code> é tabbable por vez; as setas movem o foco sem sair do componente.</span></li>
+        <li><span><b>Teclado completo</b>: <code class="inline">↑/↓</code>, <code class="inline">→/←</code>, <code class="inline">Home/End</code>, <code class="inline">Enter/Space</code> — adicionado em relação à referência legacy (era click-only).</span></li>
+        <li><span><b>Cor não é o único indicador</b>: seleção combina cor (<code class="inline">--primary</code>), peso da fonte e <code class="inline">aria-selected</code>; nós <code class="inline">disabled</code> trazem <code class="inline">aria-disabled</code> + opacidade.</span></li>
+        <li><span><b>Foco visível</b>: a linha em foco usa <code class="inline">focus-visible:ring-2 focus-visible:ring-ring</code>; nunca removemos o outline.</span></li>
+        <li><span><b>jest-axe</b> cobre Default (single), multi expandido (tri-state) e árvore com nó disabled em <code class="inline">light</code> e <code class="inline">dark</code> (ver <code class="inline">Tree.test.tsx</code>).</span></li>
+      </ul>
+    </div>
+  </section>
+</ComponentPreview>
