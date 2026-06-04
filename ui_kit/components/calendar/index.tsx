@@ -710,7 +710,7 @@ function MonthGrid({
                       ? "size-[22px] rounded-full bg-primary text-[12.5px] font-bold text-primary-foreground"
                       : c.inMonth
                         ? "text-fg"
-                        : "text-fg-subtle",
+                        : "text-muted-foreground",
                   )}
                 >
                   {c.date.getDate()}
@@ -867,7 +867,7 @@ function WeekStrip({
               )}
             >
               {dayEvents.length === 0 && (
-                <div className="py-1 text-xs text-fg-subtle">—</div>
+                <div className="py-1 text-xs text-muted-foreground">—</div>
               )}
               {dayEvents.map((ev, ei) => (
                 <EventPill
