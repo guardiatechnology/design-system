@@ -1,0 +1,151 @@
+---
+import ComponentPreview from "../../layouts/ComponentPreview.astro";
+import HighlightedCode from "../../components/HighlightedCode.astro";
+import { GuardiaRow, IsacRow, SizesRow, OnVioletRow } from "../../previews/logo";
+import logoSource from "@ds/components/logo/index.tsx?raw";
+---
+
+<ComponentPreview
+  kicker="COMPONENTES · MARCA"
+  title="Logo"
+  group="Marca"
+  storybookId="components-logo--docs"
+  sourcePath="ui_kit/components/logo"
+  lede='Marcas oficiais Guardia e Isac como componentes React. São os arquivos canônicos: por <code class="inline">lex-brand-logo</code>, as cores não podem ser alteradas. Use <code class="inline">h-*</code> para escalar — a largura segue o viewBox preservando a proporção.'
+>
+  <!-- ============ GUARDIA ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Guardia</h2>
+      <small>GuardiaBadge · GuardiaLogo</small>
+    </div>
+    <div class="preview row">
+      <GuardiaRow client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">GuardiaBadge</code> é o símbolo (quadrado violeta com o
+      "G" laranja); <code class="inline">GuardiaLogo</code> é a marca primária com
+      o lettering "Guardia". Fundos claros ou fora do espectro violeta.
+    </p>
+  </section>
+
+  <!-- ============ ISAC ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Isac</h2>
+      <small>IsacSymbol · IsacLogo</small>
+    </div>
+    <div class="preview row">
+      <IsacRow client:load />
+    </div>
+    <p class="preview-caption">
+      <code class="inline">IsacSymbol</code> é o círculo violeta com a figura do
+      agente; <code class="inline">IsacLogo</code> é o lettering "Isac".
+    </p>
+  </section>
+
+  <!-- ============ TAMANHOS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Tamanhos</h2>
+      <small>escala via altura</small>
+    </div>
+    <div class="preview row">
+      <SizesRow client:load />
+    </div>
+    <p class="preview-caption">
+      Default <code class="inline">h-8 w-auto</code>. Defina a altura
+      (<code class="inline">h-6</code>, <code class="inline">h-12</code>…) e a
+      largura acompanha. Respeite a altura mínima de 16px de
+      <code class="inline">lex-brand-logo</code>.
+    </p>
+  </section>
+
+  <!-- ============ FUNDO VIOLETA ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Em fundo violeta</h2>
+      <small>marcas full-color sobre Deep Violet</small>
+    </div>
+    <div class="preview row bg-subtle">
+      <OnVioletRow client:load />
+    </div>
+    <p class="preview-caption">
+      As marcas em cor cheia já carregam o próprio contraste e funcionam sobre
+      Deep Violet. Para fundos violeta sem cor, use as variantes secundárias
+      (ainda não exportadas) conforme <code class="inline">codex-brand-logo</code>.
+    </p>
+  </section>
+
+  <!-- ============ PROPS ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Props</h2>
+      <small>API pública</small>
+    </div>
+    <div class="props">
+      <table>
+        <thead>
+          <tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">className</td>
+            <td class="type">string</td>
+            <td class="default">"h-8 w-auto"</td>
+            <td class="desc">Classes Tailwind. Use <code class="inline">h-*</code> para escalar mantendo a proporção.</td>
+          </tr>
+          <tr>
+            <td class="name">aria-label</td>
+            <td class="type">string</td>
+            <td class="default">"Guardia" / "Isac"</td>
+            <td class="desc">Texto alternativo anunciado por leitores de tela (<code class="inline">role="img"</code>).</td>
+          </tr>
+          <tr>
+            <td class="name">aria-hidden</td>
+            <td class="type">boolean</td>
+            <td class="default">—</td>
+            <td class="desc">Use quando a marca é decorativa ao lado de texto vivo equivalente.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="preview-caption">
+      Os quatro componentes (<code class="inline">GuardiaBadge</code>,
+      <code class="inline">GuardiaLogo</code>, <code class="inline">IsacSymbol</code>,
+      <code class="inline">IsacLogo</code>) aceitam qualquer atributo de
+      <code class="inline">SVGSVGElement</code>.
+    </p>
+  </section>
+
+  <!-- ============ SOURCE ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Código-fonte</h2>
+      <small>ui_kit/components/logo/index.tsx</small>
+    </div>
+    <HighlightedCode
+      code={logoSource}
+      language="tsx"
+      filename="ui_kit/components/logo/index.tsx"
+      maxHeight="520px"
+      showLineNumbers
+    />
+  </section>
+
+  <!-- ============ A11Y ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Acessibilidade</h2>
+      <small>WCAG 2.1 AA</small>
+    </div>
+    <div class="a11y">
+      <ul>
+        <li><span><b>role="img"</b> + <code class="inline">aria-label</code> em cada marca — o nome é anunciado a leitores de tela.</span></li>
+        <li><span><b>aria-label customizável</b> via prop quando o contexto pede (ex.: "Logotipo Guardia").</span></li>
+        <li><span><b>Modo decorativo</b>: passe <code class="inline">aria-hidden</code> quando há texto vivo equivalente ao lado.</span></li>
+        <li><span><b>Cores fixas</b> per <code class="inline">lex-brand-logo</code> — não recolorir, distorcer ou aplicar efeitos.</span></li>
+      </ul>
+    </div>
+  </section>
+</ComponentPreview>
