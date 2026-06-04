@@ -48,7 +48,7 @@ export function MonthRow(): React.ReactElement {
   const [clicked, setClicked] = useState<string | null>(null);
   return (
     <div className="flex flex-col gap-3 py-2">
-      <div className="h-[640px]">
+      <div className="min-h-[640px]">
         <Calendar
           view="month"
           defaultDate={REF}
@@ -82,7 +82,7 @@ export function MonthRow(): React.ReactElement {
 
 export function WeekRow(): React.ReactElement {
   return (
-    <div className="h-[500px] py-2">
+    <div className="min-h-[500px] py-2">
       <Calendar
         view="week"
         defaultDate={new Date(2025, 10, 12)}
@@ -100,7 +100,7 @@ export function WeekRow(): React.ReactElement {
 
 export function AgendaRow(): React.ReactElement {
   return (
-    <div className="h-[560px] py-2">
+    <div className="min-h-[560px] py-2">
       <Calendar
         view="agenda"
         defaultDate={REF}
@@ -118,7 +118,7 @@ export function AgendaRow(): React.ReactElement {
 
 export function WeekNumbersRow(): React.ReactElement {
   return (
-    <div className="h-[600px] py-2">
+    <div className="min-h-[600px] py-2">
       <Calendar
         view="month"
         defaultDate={REF}
@@ -137,7 +137,7 @@ export function WeekNumbersRow(): React.ReactElement {
 
 export function EmptyRow(): React.ReactElement {
   return (
-    <div className="h-[500px] py-2">
+    <div className="min-h-[500px] py-2">
       <Calendar
         view="month"
         defaultDate={REF}
