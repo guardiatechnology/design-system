@@ -368,6 +368,58 @@
 }
 
 /* ────────────────────────────────────────────────────────────────────────
+ * @theme (static scales) — exported as :root custom properties.
+ *
+ * Unlike `@theme inline` (below), a non-inline @theme block emits its variables
+ * to :root in the compiled output, so downstream consumers (and their own
+ * Tailwind builds) can read the scale via `var(--radius-*)`, `var(--shadow-*)`,
+ * `var(--tracking-*)`, `var(--ease-*)`, `var(--duration-*)`. These tokens are
+ * theme-independent (no light/dark variants), so a single block covers both.
+ * Previously they lived in `@theme inline`, which inlines values into utilities
+ * but does NOT publish the variables — leaving consumers unable to reference
+ * the canon (e.g. a downstream `rounded-xl` fell back to Tailwind's 12px
+ * default instead of the Guardia 10px).
+ * ──────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Radii — Guardia canon */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 14px;
+  --radius-full: 9999px;
+
+  /* Shadows — violet-tinted (Guardia canon) */
+  --shadow-xs: 0 1px 2px 0 rgba(47, 14, 64, 0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(47, 14, 64, 0.06), 0 1px 2px -1px rgba(47, 14, 64, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(47, 14, 64, 0.08), 0 2px 4px -2px rgba(47, 14, 64, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(47, 14, 64, 0.10), 0 4px 6px -4px rgba(47, 14, 64, 0.08);
+  --shadow-xl: 0 20px 25px -5px rgba(47, 14, 64, 0.12), 0 8px 10px -6px rgba(47, 14, 64, 0.08);
+  --shadow-brand: 0 8px 24px -4px rgba(224, 116, 0, 0.30);
+
+  /* Letter spacing */
+  --tracking-tight: -0.02em;
+  --tracking-snug: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+  --tracking-eyebrow: 0.14em;
+
+  /* Motion — easing */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasis: cubic-bezier(0.3, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* Motion — duration */
+  --duration-instant: 80ms;
+  --duration-fast: 160ms;
+  --duration-base: 220ms;
+  --duration-slow: 320ms;
+  --duration-slower: 480ms;
+}
+
+/* ────────────────────────────────────────────────────────────────────────
  * @theme inline — expõe tokens para utility classes (bg-*, text-*, etc.)
  * ──────────────────────────────────────────────────────────────────────── */
 @theme inline {
@@ -420,42 +472,8 @@
   --text-6xl: 3.75rem;
   --text-6xl--line-height: 1;
 
-  /* Letter spacing */
-  --tracking-tight: -0.02em;
-  --tracking-snug: -0.01em;
-  --tracking-normal: 0;
-  --tracking-wide: 0.02em;
-  --tracking-eyebrow: 0.14em;
-
-  /* Radii — Guardia canon */
-  --radius-xs: 2px;
-  --radius-sm: 3px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 10px;
-  --radius-2xl: 14px;
-  --radius-full: 9999px;
-
-  /* Shadows — violet-tinted (Guardia canon) */
-  --shadow-xs: 0 1px 2px 0 rgba(47, 14, 64, 0.04);
-  --shadow-sm: 0 1px 3px 0 rgba(47, 14, 64, 0.06), 0 1px 2px -1px rgba(47, 14, 64, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(47, 14, 64, 0.08), 0 2px 4px -2px rgba(47, 14, 64, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(47, 14, 64, 0.10), 0 4px 6px -4px rgba(47, 14, 64, 0.08);
-  --shadow-xl: 0 20px 25px -5px rgba(47, 14, 64, 0.12), 0 8px 10px -6px rgba(47, 14, 64, 0.08);
-  --shadow-brand: 0 8px 24px -4px rgba(224, 116, 0, 0.30);
-
-  /* Motion — easing */
-  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  --ease-emphasis: cubic-bezier(0.3, 0, 0, 1);
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-
-  /* Motion — duration */
-  --duration-instant: 80ms;
-  --duration-fast: 160ms;
-  --duration-base: 220ms;
-  --duration-slow: 320ms;
-  --duration-slower: 480ms;
+  /* Radii, shadows, letter-spacing, and motion are declared in the non-inline
+   * @theme block above so they are emitted as :root custom properties. */
 
   /* ─── Semantic colors — shadcn-compat (HSL composition) ─── */
   --color-background: hsl(var(--background));
