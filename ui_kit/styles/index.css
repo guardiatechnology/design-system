@@ -12,6 +12,18 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/*
+ * Fontes.
+ * Poppins (UI primária) e Roboto (secundária / fallback) via Google Fonts CDN.
+ * Lastica (display da marca) é paga: vive em docs/public/fonts e é usada
+ * apenas em logos/marks — nunca em UI do pacote.
+ *
+ * Precisa vir junto dos demais @import (antes de @source/@custom-variant):
+ * a regra CSS exige que todo @import preceda qualquer outra regra. Turbopack
+ * (Next dev) trata a ordem inválida como erro fatal (500). Ver issue #299.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 /* Garante que o Tailwind escaneie todos os componentes do ui_kit
    (o path é relativo a este arquivo) */
 @source "../components/**/*.{ts,tsx}";
@@ -19,14 +31,6 @@
 
 /* Dark mode variant — driven by data-theme OR .dark class */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
-
-/*
- * Fontes.
- * Poppins (UI primária) e Roboto (secundária / fallback) via Google Fonts CDN.
- * Lastica (display da marca) é paga: vive em docs/public/fonts e é usada
- * apenas em logos/marks — nunca em UI do pacote.
- */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* ────────────────────────────────────────────────────────────────────────
  * BRAND PALETTE — rampas canônicas (wip/preview/colors-ramps.html)
