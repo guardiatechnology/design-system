@@ -23,10 +23,12 @@
 /*
  * Fontes.
  * Poppins (UI primária) e Roboto (secundária / fallback) via Google Fonts CDN.
+ * JetBrains Mono (monoespaçada, --font-mono) via Google Fonts CDN, usada em
+ * code-block e conteúdo técnico/tabular (DataTable, Accordion, Input).
  * Lastica (display da marca) é paga: vive em docs/public/fonts e é usada
  * apenas em logos/marks — nunca em UI do pacote.
  */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Poppins:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* ────────────────────────────────────────────────────────────────────────
  * BRAND PALETTE — rampas canônicas (wip/preview/colors-ramps.html)
