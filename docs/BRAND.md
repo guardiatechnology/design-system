@@ -41,9 +41,9 @@ virar código.
 | Cor    | Significado                   | 100     | 200     | 500 ⭐   | 700     | 900     |
 | ------ | ----------------------------- | ------- | ------- | ------- | ------- | ------- |
 | Yellow | Confiança e transparência     | #FFF3CE | #FFE490 | #FFC30A | #B28807 | #664E04 |
-| Orange | Eficiência e agilidade        | #F8E3CC | #F1C08C | #E07400 | #9C5100 | #592E00 |
+| Orange | Eficiência e agilidade        | #FDE3D1 | #FAC29B | #F47720 | #AB5316 | #612F0D |
 | Pink   | Acolhimento e inclusão        | #F7DFE6 | #EEB8C8 | #DB6286 | #99445D | #572735 |
-| Violet | Profundidade e excelência     | #DBD0E1 | #AF97BD | #4F186D | #37104C | #1F092B |
+| Violet | Profundidade e excelência     | #DCD3E2 | #B29FC0 | #552973 | #3B1D50 | #22102E |
 | Gray   | Estabilidade e integridade    | #D7D7D9 | #A6A6AA | #3A3A44 | #28282F | #17171B |
 
 Tokens CSS: `--guardia-<cor>-<tom>` (ex: `--guardia-orange-500`).
@@ -118,10 +118,13 @@ naturalmente — listado explicitamente abaixo.
 **Quando AAA é exigido** (texto corrido crítico, formulários de compliance),
 escolha combinações AAA:
 
-- `text-foreground` sobre `bg-background` → 11.24:1 (AAA)
-- `bg-guardia-purple-500 text-white` → 7.85:1 (AAA) — Button `variant="secondary"`
-- `bg-guardia-orange-700 text-white` → 7.5:1 (AAA)
+- `text-foreground` sobre `bg-background` → 10.76:1 (AAA)
+- `bg-guardia-purple-500 text-white` → 10.76:1 (AAA) — Button `variant="secondary"`
 - `bg-signal-yellow text-guardia-purple-900` → 13:1 (AAA) — Badge `warning solid`
+
+> Nota: com a paleta oficial (#307), `bg-guardia-orange-700 text-white` atinge
+> 5.28:1 — **AA** (texto normal), não AAA. `bg-guardia-orange-500 text-white`
+> é 2.80:1 e não deve ser usado para texto (ver `lex-brand-colors`).
 
 **Tokens que NÃO atingem AAA** (atendem AA para texto grande ≥ 18pt ou ≥ 14pt bold):
 
