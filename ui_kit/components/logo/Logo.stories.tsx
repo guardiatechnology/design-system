@@ -11,8 +11,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-/** Deep Violet #4F186D — the canonical background for the white wordmarks. */
-const violet = { background: "#4F186D" } as const;
+/** Deep Violet #552973 — the canonical background for the white wordmarks. */
+const violet = { background: "#552973" } as const;
 
 export const GuardiaPrimary: Story = {
     render: () => (
@@ -62,7 +62,7 @@ export const OnViolet: Story = {
     render: () => (
         <div
             className="flex flex-wrap items-center gap-8 rounded-lg p-8"
-            style={{ background: "#4F186D" }}
+            style={{ background: "#552973" }}
         >
             <GuardiaBadge className="h-16 w-auto" />
             <IsacSymbol className="h-16 w-auto" />

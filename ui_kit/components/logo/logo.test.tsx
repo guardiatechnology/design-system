@@ -62,23 +62,23 @@ describe("Logo", () => {
     });
 
     // Brand colors pinned to the canonical palette (lex-brand-colors):
-    // Warm Orange #E07400 + Deep Violet #4F186D. Guards against off-palette drift.
+    // Warm Orange #F47720 + Deep Violet #552973. Guards against off-palette drift.
     it("GuardiaBadge uses the canonical palette (violet + orange)", () => {
         const { container } = render(<GuardiaBadge />);
         const fills = Array.from(container.querySelectorAll("path[fill]")).map((p) =>
             p.getAttribute("fill"),
         );
-        expect(fills).toContain("#4f186d");
-        expect(fills).toContain("#e07400");
+        expect(fills).toContain("#552973");
+        expect(fills).toContain("#f47720");
     });
 
-    it("GuardiaLogo uses the canonical orange (#e07400, not #f47720)", () => {
+    it("GuardiaLogo uses the canonical orange (#f47720, not #e07400)", () => {
         const { container } = render(<GuardiaLogo />);
         const fills = Array.from(container.querySelectorAll("path[fill]")).map((p) =>
             p.getAttribute("fill"),
         );
-        expect(fills).toContain("#e07400");
-        expect(fills).not.toContain("#f47720");
+        expect(fills).toContain("#f47720");
+        expect(fills).not.toContain("#e07400");
     });
 
     // jest-axe — each mark is WCAG AA clean in light + dark
@@ -89,7 +89,7 @@ describe("Logo", () => {
 
     it("white wordmarks over Deep Violet are axe-clean in light + dark", async () => {
         const { container } = render(
-            <div style={{ background: "#4F186D" }}>
+            <div style={{ background: "#552973" }}>
                 <GuardiaLogo />
                 <IsacLogo />
             </div>,

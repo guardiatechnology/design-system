@@ -128,14 +128,14 @@ describe("<Badge />", () => {
       lightBorder: "border-guardia-purple-500",
       darkBorder:  "dark:border-guardia-purple-200",
       originalLightBorder: null,  // light already passed; only dark was failing
-      lightRatio: "12.16:1", darkRatio: "6.80:1",
+      lightRatio: "10.49:1", darkRatio: "7.33:1",
     },
     {
       variant: "accent",
-      lightBorder: "border-guardia-orange-500",
-      darkBorder:  null,  // single-token (both themes pass; light tight at 3.07:1)
-      originalLightBorder: null,
-      lightRatio: "3.07:1", darkRatio: "5.68:1",
+      lightBorder: "border-guardia-orange-700",  // official orange-500 #F47720 on light = 2.73:1 FAIL → orange-700 #AB5316 = 5.14:1
+      darkBorder:  "dark:border-guardia-orange-500",
+      originalLightBorder: "border-guardia-orange-500",  // must not leak the sub-3:1 orange-500 border into light
+      lightRatio: "5.14:1", darkRatio: "6.39:1",
     },
     {
       variant: "success",
