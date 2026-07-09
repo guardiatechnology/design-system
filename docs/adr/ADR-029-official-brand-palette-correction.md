@@ -52,6 +52,23 @@ White on `#552973` = **10.76:1 (AAA)** — text/CTA pairings remain fully access
 | Rewrite `--secondary-foreground` / soft-accent text now | Design decisions (button/label text color) belong to Brand; surfaced as follow-ups instead. |
 | Patch `lex-brand-colors` locally in the DS | The Law is Ahrena-owned; local edits would drift from canonical and be overwritten by sync. |
 
+## Logo art — standalone assets replaced with the official 2026 identity
+
+Beyond palette, the standalone `assets/logo/*.svg` carried the **old** identity (the "G-in-square" mark). The official 2026 identity (Notion → Branding → Logomarca; Drive SVG kit) is the concentric-arc symbol + lowercase "guardia" wordmark with the orange i-dot — already embedded in the React `<GuardiaLogo>`/`<GuardiaBadge>`. The standalone assets and their `docs/public/**` copies were regenerated from the official colorido vector (geometry = official; per-path fills: symbol orange, wordmark violet, i-dot orange).
+
+The official kit ships **only 4 full signatures** (colorido, branco, branco-roxo, preto) — no symbol-only, monochrome, or rounded variants. Per Fernando's decision ("adopt the 4 official + derive the rest"), the DS's richer taxonomy was **derived** from the official geometry, documented here for review:
+
+| DS file group | Derivation |
+|---|---|
+| `guardia-logotipo-colorido` (new) | official colorido, verbatim |
+| `guardia-logotipo-branco-roxo` (new) | violet bg + white wordmark + orange symbol/i-dot (official branco-roxo composition) |
+| `guardia-logotipo-{purple,orange,mono-black,mono-white}` | monochrome recolor of the official signature geometry |
+| `guardia-logo-*-transparent`, `-mono-*` | symbol-only (2 official symbol paths, bbox-cropped), single-color |
+| `guardia-logo-{purple,orange}-and-{orange,purple}` | symbol-only, the two symbol paths colored arc/inner (dual) |
+| `guardia-logo-{purple,orange}-rounded` | symbol-only (white + accent) on a rounded-square brand-color background |
+
+Geometry is authentic to the official vector; the color/composition choices for symbol-only, dual, and rounded variants are the derivation decisions to validate. The React component is unchanged (already the new identity + corrected palette). Visual baselines regenerate on CI.
+
 ## References
 
 - `ui_kit/styles/index.css`, `ui_kit/components/logo/index.tsx`, `ui_kit/components/badge/index.tsx`
