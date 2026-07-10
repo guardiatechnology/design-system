@@ -36,7 +36,7 @@ White on `#552973` = **10.76:1 (AAA)** — text/CTA pairings remain fully access
 ## Scope boundaries
 
 - **Canonical `lex-brand-colors` / `codex-brand-colors`** are Ahrena framework artifacts (vendored here under `.claude/` and `.ahrena/`). They are **not** rewritten in this repo — corrected upstream in Ahrena [#359](https://github.com/guardiatechnology/ahrena/issues/359) and refreshed here via sync. The DS-local copies are temporarily divergent until that lands.
-- **Visual baselines** (`__image_snapshots__/`) are **not** regenerated locally — per the standing policy (Tooltip AC-28, `migrate-visual-baselines.mjs`), baselines are Ubuntu/CI-rendered via `regenerate-baselines`, never committed from macOS.
+- **Visual baselines** (`__image_snapshots__/`) are **not** regenerated locally — per the standing policy (Tooltip AC-28, `migrate-visual-baselines.mjs`), baselines are Ubuntu/CI-rendered via `regenerate-baselines`, never committed from macOS. Because this PR regenerates the **entire** baseline set (~264 PNGs), it exposed a latent bug in `scripts/push-baselines.mjs`: blob uploads had no throttle or retry, so GitHub's *secondary* rate limit tripped deterministically mid-upload (~180/266). Fixed in-scope here (required to land the PR) — small parallel chunks with an inter-chunk pause plus per-request backoff honoring `retry-after`. Normal PRs touch few baselines and never hit this.
 - **Historical artifacts** (`docs/issues/**`, past ADRs, `sessions/*.jsonl`) and framework-example incidental hex mentions are left intact.
 
 ## Version
