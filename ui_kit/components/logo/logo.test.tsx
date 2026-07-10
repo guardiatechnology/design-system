@@ -81,6 +81,29 @@ describe("Logo", () => {
         expect(fills).not.toContain("#e07400");
     });
 
+    // Isac marks consume the dedicated --isac-* tokens (which alias the
+    // official palette); guards against the stale bespoke fills.
+    it("IsacSymbol consumes the --isac-* tokens, not stale bespoke hexes", () => {
+        const { container } = render(<IsacSymbol />);
+        const fills = Array.from(container.querySelectorAll("[fill]")).map((el) =>
+            el.getAttribute("fill"),
+        );
+        expect(fills).toContain("var(--isac-violet)");
+        expect(fills).toContain("var(--isac-orange)");
+        expect(fills).toContain("var(--isac-light)");
+        expect(fills).not.toContain("#54266b");
+        expect(fills).not.toContain("#ee750d");
+        expect(fills).not.toContain("#f4e6f2");
+    });
+
+    it("IsacLogo's star uses the --isac-orange token", () => {
+        const { container } = render(<IsacLogo />);
+        const fills = Array.from(container.querySelectorAll("[fill]")).map((el) =>
+            el.getAttribute("fill"),
+        );
+        expect(fills).toContain("var(--isac-orange)");
+    });
+
     // jest-axe — each mark is WCAG AA clean in light + dark
     it("GuardiaBadge is axe-clean in light + dark", async () => {
         const { container } = render(<GuardiaBadge />);

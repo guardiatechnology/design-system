@@ -84,6 +84,16 @@
   --mono-white: #FDFDFD;
   --mono-black: #0E1016;
 
+  /* Isac — sub-brand (the agentic assistant).
+   * Dedicated namespace so Isac can diverge from the Guardia palette later.
+   * Violet + orange alias the official brand ramp (they coincide today, per
+   * the newest official Isac vector on the Drive); --isac-light is Isac's own
+   * mascot-face tint (ΔE 6.38 vs guardia-purple-100 — too far to reuse).
+   * Source of truth: Drive Branding → official Isac vectors. */
+  --isac-violet: var(--guardia-purple-500);
+  --isac-orange: var(--guardia-orange-500);
+  --isac-light: #f0e4f1;
+
   /* Signal (Lighthouse) — exclusivos para data-viz, nunca para UI chrome */
   --signal-green: #00BF63;
   --signal-yellow: #FFDE59;
@@ -574,6 +584,11 @@
   --color-guardia-gray-700: var(--guardia-gray-700);
   --color-guardia-gray-800: var(--guardia-gray-800);
   --color-guardia-gray-900: var(--guardia-gray-900);
+
+  /* Isac sub-brand — exposes bg-/text-/fill-isac-* utilities */
+  --color-isac-violet: var(--isac-violet);
+  --color-isac-orange: var(--isac-orange);
+  --color-isac-light: var(--isac-light);
 
   /* Legacy brand aliases (retro-compat com componentes herdados) */
   --color-brand-orange: var(--guardia-orange-500);
