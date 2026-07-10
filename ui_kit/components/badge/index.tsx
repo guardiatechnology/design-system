@@ -45,7 +45,7 @@ const badgeVariants = cva(
       /* ── SOFT (default) ───────────────────────────── */
       { appearance: "soft", variant: "neutral",  className: "bg-guardia-gray-100 text-guardia-gray-700" },
       { appearance: "soft", variant: "brand",    className: "bg-guardia-purple-100 text-guardia-purple-700" },
-      { appearance: "soft", variant: "accent",   className: "bg-guardia-orange-100 text-guardia-orange-700" },
+      { appearance: "soft", variant: "accent",   className: "bg-guardia-orange-100 text-guardia-orange-900" },
       { appearance: "soft", variant: "success",  className: "bg-[color-mix(in_oklab,var(--signal-green)_18%,white)] text-[color-mix(in_oklab,var(--signal-green)_52%,black)]" },
       { appearance: "soft", variant: "warning",  className: "bg-guardia-yellow-100 text-guardia-yellow-900" },
       { appearance: "soft", variant: "danger",   className: "bg-[color-mix(in_oklab,var(--signal-red)_14%,white)] text-[color-mix(in_oklab,var(--signal-red)_45%,black)]" },

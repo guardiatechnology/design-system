@@ -23,7 +23,7 @@ describe("<Badge />", () => {
   it("applies each variant in soft appearance", () => {
     const cases = [
       { variant: "brand",    bg: "bg-guardia-purple-100",  fg: "text-guardia-purple-700" },
-      { variant: "accent",   bg: "bg-guardia-orange-100",  fg: "text-guardia-orange-700" },
+      { variant: "accent",   bg: "bg-guardia-orange-100",  fg: "text-guardia-orange-900" },
       { variant: "warning",  bg: "bg-guardia-yellow-100",  fg: "text-guardia-yellow-900" },
     ] as const;
     cases.forEach(({ variant, bg, fg }) => {

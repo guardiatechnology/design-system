@@ -320,7 +320,7 @@ describe("<Chip />", () => {
       it.each([
         { variant: "neutral" as const, bg: /bg-guardia-gray-100/,    fg: /text-guardia-gray-700/ },
         { variant: "brand" as const,   bg: /bg-guardia-purple-100/,  fg: /text-guardia-purple-700/ },
-        { variant: "accent" as const,  bg: /bg-guardia-orange-100/,  fg: /text-guardia-orange-700/ },
+        { variant: "accent" as const,  bg: /bg-guardia-orange-100/,  fg: /text-guardia-orange-900/ },
         { variant: "warning" as const, bg: /bg-guardia-yellow-100/,  fg: /text-guardia-yellow-900/ },
       ])("variant=$variant soft uses tinted bg + matching text shade", ({ variant, bg, fg }) => {
         render(

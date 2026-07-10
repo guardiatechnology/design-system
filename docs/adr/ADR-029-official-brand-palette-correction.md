@@ -27,7 +27,7 @@ The official Warm Orange `#F47720` on white is **2.80:1** (vs. `#E07400` = 3.36:
 
 - **`Badge` outline `accent`** used `border-guardia-orange-500` in both themes; in light it now reads 2.73:1. Fixed with the codebase's established theme-conditional pattern: `border-guardia-orange-700 dark:border-guardia-orange-500` (light 5.14:1 / dark 6.39:1). Tests and contrast comments updated.
 - **`--secondary-foreground: white` on orange-500** (2.80:1) is left unchanged in this PR and **flagged** for a Brand decision (Notion allows white on orange only for large text; small text should use violet-500). Not silently redesigned here.
-- **`Badge` soft `accent`** (orange-700 on orange-100) drops to 4.29:1 — marginally under AA-Normal (4.5). Flagged for the accessibility follow-up, not changed here.
+- **Soft `accent` (`orange-700` on `orange-100`)** drops to 4.29:1 — under AA-Normal (4.5). The Storybook a11y suite (axe-core) fails this on `Chip` (Matrix, SemanticUseCases) and `AgentCard` (AllStatuses `working` pill / orange avatar tint), where the text is normal-weight. Fixed by moving the soft-accent text to `orange-900` `#612F0D` (8.90:1 light, 6.90:1 dark) in `Badge`, `Chip`, and `AgentCard`. The `orange-100` tint background is preserved.
 
 ### White on violet-500
 
