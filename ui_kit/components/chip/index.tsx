@@ -103,9 +103,11 @@ const chipVariants = cva(
       // ─── RESTING (selected: false) — appearance: soft ───────────────────
       // Badge's soft palette adopted verbatim (validated). text contrast
       // verified against AA on the corresponding *-100/*-700 pairs.
+      // accent: under the official palette (#307) orange-700 on orange-100
+      // drops to 4.29:1 (< AA-Normal); text moves to orange-900 (8.90:1).
       { selected: false, appearance: "soft", variant: "neutral",  className: "bg-guardia-gray-100 border-transparent text-guardia-gray-700" },
       { selected: false, appearance: "soft", variant: "brand",    className: "bg-guardia-purple-100 border-transparent text-guardia-purple-700" },
-      { selected: false, appearance: "soft", variant: "accent",   className: "bg-guardia-orange-100 border-transparent text-guardia-orange-700" },
+      { selected: false, appearance: "soft", variant: "accent",   className: "bg-guardia-orange-100 border-transparent text-guardia-orange-900" },
       { selected: false, appearance: "soft", variant: "success",  className: "bg-signal-green-100 border-transparent text-signal-green-700" },
       { selected: false, appearance: "soft", variant: "warning",  className: "bg-guardia-yellow-100 border-transparent text-guardia-yellow-900" },
       { selected: false, appearance: "soft", variant: "danger",   className: "bg-signal-red-100 border-transparent text-signal-red-700" },

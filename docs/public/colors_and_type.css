@@ -35,9 +35,9 @@
      Cada cor tem significado alinhado aos valores culturais.
      ============================================================ */
   --guardia-yellow:  #FFC30A;  /* Confiança e Transparência */
-  --guardia-orange:  #E07400;  /* Eficiência e Agilidade   */
+  --guardia-orange:  #F47720;  /* Eficiência e Agilidade   */
   --guardia-pink:     #DB6286;  /* Acolhimento e Inclusão    */
-  --guardia-purple:  #4F186D;  /* Profundidade e Excelência */
+  --guardia-purple:  #552973;  /* Profundidade e Excelência */
   --guardia-gray:    #3A3A44;  /* Estabilidade e Integridade*/
 
   /* ============================================================
@@ -66,15 +66,15 @@
 
   /* Laranja Quente */
   --orange-50:  #FDF1E3;
-  --orange-100: #F8E3CC;
-  --orange-200: #F1C08C;
+  --orange-100: #FDE3D1;
+  --orange-200: #FAC29B;
   --orange-300: #ECA354;
   --orange-400: #E78C2B;
-  --orange-500: #E07400;
+  --orange-500: #F47720;
   --orange-600: #BE6300;
-  --orange-700: #9C5100;
+  --orange-700: #AB5316;
   --orange-800: #7B4000;
-  --orange-900: #592E00;
+  --orange-900: #612F0D;
 
   /* Rosa Suave */
   --pink-50:  #FBEEF2;
@@ -90,15 +90,15 @@
 
   /* Violeta Profundo */
   --violet-50:  #EEE8F1;
-  --violet-100: #DBD0E1;
-  --violet-200: #AF97BD;
+  --violet-100: #DCD3E2;
+  --violet-200: #B29FC0;
   --violet-300: #8A6B9C;
   --violet-400: #6D4985;
-  --violet-500: #4F186D;
+  --violet-500: #552973;
   --violet-600: #43145D;
-  --violet-700: #37104C;
+  --violet-700: #3B1D50;
   --violet-800: #2B0C3B;
-  --violet-900: #1F092B;
+  --violet-900: #22102E;
 
   /* Cinza Báltico */
   --gray-50:  #F7F6F8;
@@ -142,7 +142,7 @@
   --fg-strong:      var(--violet-900);  /* títulos com presença de marca */
   --fg-muted:       var(--gray-500);
   --fg-subtle:      var(--gray-300);
-  --border:         #E7E3EC;            /* neutro com viés violeta */
+  --border:         #E9E3ED;            /* neutro com viés violeta */
   --border-strong:  var(--violet-200);
   --ring:           var(--orange-500);  /* foco = laranja */
 
@@ -150,8 +150,8 @@
      FOCUS RINGS — tokens unificados (3px, cor semântica + 28% alpha)
      Use SEMPRE via var() — nunca escrever rgba() hardcoded.
      ============================================================ */
-  --focus-ring:         0 0 0 3px rgba(79, 24, 109, 0.22);   /* violet-500 — ação padrão */
-  --focus-ring-accent:  0 0 0 3px rgba(224, 116, 0, 0.28);   /* orange-500 — CTA, botões de ação */
+  --focus-ring:         0 0 0 3px rgba(85, 41, 115, 0.22);   /* violet-500 — ação padrão */
+  --focus-ring-accent:  0 0 0 3px rgba(244, 119, 32, 0.28);   /* orange-500 — CTA, botões de ação */
   --focus-ring-error:   0 0 0 3px rgba(255, 49, 49, 0.22);   /* signal-red */
   --focus-ring-success: 0 0 0 3px rgba(0, 191, 99, 0.22);    /* signal-green */
   --focus-ring-info:    0 0 0 3px rgba(0, 74, 173, 0.22);    /* signal-blue */
@@ -267,7 +267,7 @@
   --shadow-md: 0 4px 12px -2px rgba(47, 14, 64, .10), 0 2px 4px -2px rgba(47, 14, 64, .06);
   --shadow-lg: 0 12px 24px -6px rgba(47, 14, 64, .14), 0 4px 8px -4px rgba(47, 14, 64, .08);
   --shadow-xl: 0 24px 48px -12px rgba(47, 14, 64, .22);
-  --shadow-brand: 0 10px 24px -6px rgba(224, 116, 0, .32); /* laranja — CTA em destaque */
+  --shadow-brand: 0 10px 24px -6px rgba(244, 119, 32, .32); /* laranja — CTA em destaque */
 
   /* ============================================================
      MOTION
@@ -307,8 +307,8 @@
   --bg-hover:              var(--gray-500);     /* Surface 3 — hover/selected (#3A3A44) */
   --surface:               var(--gray-700);     /* Surface 2 — cards (#28282F) */
   --papel:                 var(--gray-700);     /* alias de surface */
-  --surface-brand:         var(--violet-900);   /* Surface Brand (#1F092B) */
-  --surface-brand-elevated: var(--violet-700);  /* Surface Brand Elevado (#37104C) */
+  --surface-brand:         var(--violet-900);   /* Surface Brand (#22102E) */
+  --surface-brand-elevated: var(--violet-700);  /* Surface Brand Elevado (#3B1D50) */
 
   --fg:                    var(--mono-white);   /* Texto Primário */
   --fg-strong:             var(--mono-white);

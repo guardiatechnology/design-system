@@ -1,7 +1,7 @@
 ---
 import ComponentPreview from "../../layouts/ComponentPreview.astro";
 import HighlightedCode from "../../components/HighlightedCode.astro";
-import { GuardiaRow, IsacRow, SizesRow, OnVioletRow } from "../../previews/logo";
+import { GuardiaRow, IsacRow, SizesRow, OnVioletRow, SignatureVariationsRow, SymbolVariationsRow } from "../../previews/logo";
 import logoSource from "@ds/components/logo/index.tsx?raw";
 ---
 
@@ -74,6 +74,34 @@ import logoSource from "@ds/components/logo/index.tsx?raw";
       As marcas em cor cheia já carregam o próprio contraste e funcionam sobre
       Deep Violet. Para fundos violeta sem cor, use as variantes secundárias
       (ainda não exportadas) conforme <code class="inline">codex-brand-logo</code>.
+    </p>
+  </section>
+
+  <!-- ============ VARIAÇÕES DE COR ============ -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <h2>Variações de cor</h2>
+      <small>derivadas do vetor oficial 2026 · assets/logo/*.svg</small>
+    </div>
+    <p class="preview-caption">
+      Assinatura completa (símbolo + wordmark) em cor cheia, mono roxo/laranja,
+      mono preto/branco e branco-roxo.
+    </p>
+    <div class="preview row bg-subtle">
+      <SignatureVariationsRow />
+    </div>
+    <p class="preview-caption">
+      Só o símbolo — transparente (roxo/laranja), mono, dual (arco + interno) e
+      arredondado sobre fundo de marca.
+    </p>
+    <div class="preview row bg-subtle">
+      <SymbolVariationsRow />
+    </div>
+    <p class="preview-caption">
+      Estas variantes existem hoje como arquivos <code class="inline">.svg</code>;
+      ainda não são expostas por um componente React (será o
+      <code class="inline">Logotipo</code>, em migração). Cores fixas per
+      <code class="inline">lex-brand-logo</code>.
     </p>
   </section>
 

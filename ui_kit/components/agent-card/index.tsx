@@ -113,7 +113,8 @@ const ACCENT_STRIPE: Record<AgentAccent, string> = {
  *
  * Contraste do ícone (graphic contrast ≥ 3:1 — WCAG 2.1 AA):
  *   - violet 500 sobre violet-100 = 8.39:1 ambos temas (palette fixa).
- *   - orange-700 sobre orange-100 = 4.69:1 ambos temas (palette fixa).
+ *   - orange-900 sobre orange-100 = 8.90:1 ambos temas (palette oficial
+ *     #307: orange-700 caiu a 4.29:1 < AA-Normal; sobe a orange-900).
  *   - blue/green usam `text-{info|success}-fg` em vez do tom puro do sinal:
  *     o token semântico `*-fg` é tema-aware (deep tone em light, mono-white
  *     em dark) e contrasta ≥ 6.6:1 sobre o `*-soft` correspondente nos
@@ -123,7 +124,7 @@ const ACCENT_STRIPE: Record<AgentAccent, string> = {
  */
 const ACCENT_AVATAR_TINT: Record<AgentAccent, string> = {
   violet: "bg-guardia-purple-100 text-guardia-purple-500",
-  orange: "bg-guardia-orange-100 text-guardia-orange-700",
+  orange: "bg-guardia-orange-100 text-guardia-orange-900",
   blue: "bg-info-soft text-info-fg",
   green: "bg-success-soft text-success-fg",
 };
@@ -370,7 +371,7 @@ AgentCardRole.displayName = "AgentCardRole";
  * Contraste verificado em ambos os temas (WCAG 2.1 AA, ≥ 4.5:1 para
  * texto normal — pill text 11.5px regular):
  *   idle/offline   light 7.82:1 · dark 7.82:1 (gray-500 + fg-muted)
- *   working        light 4.69:1 · dark 6.97:1 (orange-900 + orange-200)
+ *   working        light 8.90:1 · dark 6.90:1 (orange-900 + orange-200)
  *   active         light 8.65:1 · dark 12.21:1 (success-soft + fg=mono-white)
  *   paused         light 7.14:1 · dark 6.31:1 (yellow-900 + yellow-200)
  *   error          light 11.89:1 · dark 13.10:1 (danger-soft + fg=mono-white)
@@ -382,7 +383,7 @@ AgentCardRole.displayName = "AgentCardRole";
 const STATUS_PILL_CLASSES: Record<AgentStatus, string> = {
   idle: "bg-guardia-gray-100 text-fg-muted dark:bg-guardia-gray-500 dark:text-fg-muted",
   working:
-    "bg-guardia-orange-100 text-guardia-orange-700 dark:bg-guardia-orange-900 dark:text-guardia-orange-200",
+    "bg-guardia-orange-100 text-guardia-orange-900 dark:bg-guardia-orange-900 dark:text-guardia-orange-200",
   active:
     "bg-success-soft text-signal-green-700 dark:text-fg",
   paused:

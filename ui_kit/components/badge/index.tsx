@@ -45,7 +45,7 @@ const badgeVariants = cva(
       /* ── SOFT (default) ───────────────────────────── */
       { appearance: "soft", variant: "neutral",  className: "bg-guardia-gray-100 text-guardia-gray-700" },
       { appearance: "soft", variant: "brand",    className: "bg-guardia-purple-100 text-guardia-purple-700" },
-      { appearance: "soft", variant: "accent",   className: "bg-guardia-orange-100 text-guardia-orange-700" },
+      { appearance: "soft", variant: "accent",   className: "bg-guardia-orange-100 text-guardia-orange-900" },
       { appearance: "soft", variant: "success",  className: "bg-[color-mix(in_oklab,var(--signal-green)_18%,white)] text-[color-mix(in_oklab,var(--signal-green)_52%,black)]" },
       { appearance: "soft", variant: "warning",  className: "bg-guardia-yellow-100 text-guardia-yellow-900" },
       { appearance: "soft", variant: "danger",   className: "bg-[color-mix(in_oklab,var(--signal-red)_14%,white)] text-[color-mix(in_oklab,var(--signal-red)_45%,black)]" },
@@ -54,7 +54,7 @@ const badgeVariants = cva(
       /* ── SOLID ──────────────────────────────────────
        * WCAG fg overrides (per WCAG 2.1 §1.4.3 sRGB recompute, aligned with
        * Chip ADR-003 — see docs/adr/ADR-003-chip-variants.md):
-       *   accent  → text-guardia-gray-900 (text-white over orange-500 = 3.15:1 fails AA-Normal)
+       *   accent  → text-guardia-gray-900 (text-white over orange-500 = 2.80:1 fails AA-Normal)
        *   success → text-guardia-gray-900 (text-white over signal-green = 2.43:1 fails AA-Normal AND AA-Large)
        *   danger  → text-guardia-gray-900 (text-white over signal-red   = 3.66:1 fails AA-Normal)
        *   warning → text-guardia-purple-900 (text-white over signal-yellow = 1.33:1 fails everything)
@@ -86,17 +86,18 @@ const badgeVariants = cva(
        *
        *   variant  light border          ratio  | dark border           ratio
        *   neutral  guardia-gray-500    10.95:1  | guardia-gray-200     7.37:1
-       *   brand    guardia-purple-500  12.16:1  | guardia-purple-200   6.80:1
-       *   accent   guardia-orange-500   3.07:1  | guardia-orange-500   5.68:1
+       *   brand    guardia-purple-500  10.49:1  | guardia-purple-200   7.33:1
+       *   accent   guardia-orange-700   5.14:1  | guardia-orange-500   6.39:1
        *   success  signal-green-700     7.23:1  | signal-green         7.35:1
        *   warning  guardia-yellow-700   3.19:1  | signal-yellow       13.49:1
        *   danger   signal-red           3.57:1  | signal-red           4.88:1
        *   info     signal-blue          7.92:1  | signal-blue-200     11.73:1
        *
-       * accent light (3.07:1) is the tightest combo — passes 3:1 by 0.07.
-       * orange-500 #E07400 over #FCFCFC sits right at the threshold; kept
-       * as-is because it is the canonical brand accent. If visual review
-       * ever wants a stricter margin, swap for orange-700 #9C5100 (5.70:1).
+       * accent: under the official palette (issue #307) orange-500 #F47720
+       * over #FCFCFC is 2.73:1 — BELOW the 3:1 UI minimum (lex-brand-colors
+       * forbids orange-500 on light). The light border therefore uses
+       * orange-700 #AB5316 (5.14:1) via the theme-conditional pattern above;
+       * dark keeps orange-500 #F47720 (6.39:1) over #17171B.
        *
        * text-foreground (AA-Normal):
        *   light fg #44186D over #FCFCFC = 12.81:1
@@ -104,7 +105,7 @@ const badgeVariants = cva(
        */
       { appearance: "outline", variant: "neutral",  className: "border-guardia-gray-500 dark:border-guardia-gray-200 text-foreground" },
       { appearance: "outline", variant: "brand",    className: "border-guardia-purple-500 dark:border-guardia-purple-200 text-foreground" },
-      { appearance: "outline", variant: "accent",   className: "border-guardia-orange-500 text-foreground" },
+      { appearance: "outline", variant: "accent",   className: "border-guardia-orange-700 dark:border-guardia-orange-500 text-foreground" },
       { appearance: "outline", variant: "success",  className: "border-signal-green-700 dark:border-signal-green text-foreground" },
       { appearance: "outline", variant: "warning",  className: "border-guardia-yellow-700 dark:border-signal-yellow text-foreground" },
       { appearance: "outline", variant: "danger",   className: "border-signal-red text-foreground" },

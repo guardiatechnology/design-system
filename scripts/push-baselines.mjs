@@ -29,24 +29,51 @@ if (!GH_TOKEN || !BRANCH || !GITHUB_REPOSITORY) {
 
 const [owner, repo] = GITHUB_REPOSITORY.split("/");
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// GitHub enforces a *secondary* rate limit on bursts of content-creating
+// requests (blob/tree/commit), independent of the primary hourly quota. A PR
+// that regenerates the whole baseline set (hundreds of PNGs) reliably trips it
+// mid-upload with a 403 "secondary rate limit". Honor `retry-after` when
+// present, otherwise back off exponentially with jitter.
+const MAX_RETRIES = 6;
+
 async function gh(method, endpoint, body) {
-  const res = await fetch(`https://api.github.com${endpoint}`, {
-    method,
-    headers: {
-      Authorization: `Bearer ${GH_TOKEN}`,
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      "Content-Type": "application/json",
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  if (!res.ok) {
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(`https://api.github.com${endpoint}`, {
+      method,
+      headers: {
+        Authorization: `Bearer ${GH_TOKEN}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Content-Type": "application/json",
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (res.ok) return res.json();
+
     const text = await res.text();
+    const secondary =
+      (res.status === 403 || res.status === 429) &&
+      /secondary rate limit/i.test(text);
+    if (secondary && attempt < MAX_RETRIES) {
+      const retryAfter = Number(res.headers.get("retry-after"));
+      const waitMs =
+        Number.isFinite(retryAfter) && retryAfter > 0
+          ? retryAfter * 1000
+          : Math.min(60000, 2 ** attempt * 1000) +
+            Math.floor(Math.random() * 1000);
+      console.log(
+        `Secondary rate limit on ${method} ${endpoint}; ` +
+          `retry ${attempt + 1}/${MAX_RETRIES} in ${Math.round(waitMs / 1000)}s`,
+      );
+      await sleep(waitMs);
+      continue;
+    }
     throw new Error(
       `GitHub API ${method} ${endpoint} failed: ${res.status} ${text}`,
     );
   }
-  return res.json();
 }
 
 // 1. List PNG changes (added, modified, deleted) under __image_snapshots__/.
@@ -89,10 +116,12 @@ const headCommit = await gh(
 );
 const baseTreeSha = headCommit.tree.sha;
 
-// 3. Upload each PNG as a blob; collect tree entries (chunked parallel to
-//    stay within GitHub API secondary-rate limits — sequential would be
-//    ~1 req/200ms × 400+ files = >1min wall time).
-const CHUNK_SIZE = 10;
+// 3. Upload each PNG as a blob; collect tree entries. Small parallel chunks
+//    with a pause between them keep the burst under GitHub's secondary-rate
+//    limit; the per-request backoff in `gh()` is the safety net when a large
+//    changeset (full-baseline regeneration) still trips it mid-upload.
+const CHUNK_SIZE = 6;
+const CHUNK_PAUSE_MS = 1200;
 const treeEntries = [];
 for (let i = 0; i < changed.length; i += CHUNK_SIZE) {
   const chunk = changed.slice(i, i + CHUNK_SIZE);
@@ -111,6 +140,7 @@ for (let i = 0; i < changed.length; i += CHUNK_SIZE) {
   );
   treeEntries.push(...results);
   console.log(`Uploaded ${treeEntries.length}/${changed.length} blobs`);
+  if (i + CHUNK_SIZE < changed.length) await sleep(CHUNK_PAUSE_MS);
 }
 
 // 4. Create a tree on top of the current one
