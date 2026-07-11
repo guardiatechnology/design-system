@@ -9,10 +9,10 @@ import { cn } from "../../lib/utils";
  * applied.
  *
  * Colors: the Guardia marks use the canonical palette — Warm Orange
- * `#f47720` and Deep Violet `#552973` (`lex-brand-colors`). The IsacSymbol
- * retains the bespoke fills from its source file (`#54266b`, `#ee750d`,
- * `#f4e6f2`); Isac has no canonical palette entry yet, so these are pending
- * brand verification against Notion Branding before they can be tokenized.
+ * `#f47720` and Deep Violet `#552973` (`lex-brand-colors`). The Isac marks
+ * consume the dedicated `--isac-*` tokens (`--isac-violet`, `--isac-orange`,
+ * `--isac-light`); verified against the official Isac vectors on the Drive,
+ * Isac inherits the brand violet/orange and adds its own light mascot tint.
  *
  * Variant selection by background (see `codex-brand-logo`):
  *   - Light / off-white / light gray  → GuardiaLogo (primary) / GuardiaBadge
@@ -201,7 +201,7 @@ export const IsacLogo = React.forwardRef<SVGSVGElement, LogoProps>(
                     <path
                         transform="matrix(1,0,0,-1,43.032,18.276803)"
                         d="M0 0 2.541-8.318C2.604-8.525 2.795-8.666 3.011-8.666H11.36C12.195-8.666 12.556-9.724 11.895-10.235L5.07-15.509C4.908-15.634 4.841-15.846 4.901-16.041L7.483-24.493C7.732-25.31 6.785-25.964 6.109-25.442L-.537-20.306C-.714-20.169-.961-20.169-1.138-20.306L-7.785-25.442C-8.46-25.964-9.408-25.31-9.158-24.493L-6.576-16.041C-6.516-15.846-6.584-15.634-6.745-15.509L-13.571-10.235C-14.232-9.724-13.87-8.666-13.035-8.666H-4.686C-4.47-8.666-4.28-8.525-4.217-8.318L-1.675 0C-1.423 .827-.253 .827 0 0"
-                        fill="#f47720"
+                        fill="var(--isac-orange)"
                     />
                 </g>
             </svg>
@@ -224,11 +224,11 @@ export const IsacSymbol = React.forwardRef<SVGSVGElement, LogoProps>(
             className={cn("h-8 w-auto", className)}
             {...props}
         >
-            <circle cx="374" cy="380" r="366" fill="#54266b" />
-            <g transform="translate(0,762) scale(0.1,-0.1)" fill="#f4e6f2">
+            <circle cx="374" cy="380" r="366" fill="var(--isac-violet)" />
+            <g transform="translate(0,762) scale(0.1,-0.1)" fill="var(--isac-light)">
                 <path d="M3550 6129 c-1019 -74 -1878 -819 -2090 -1814 -75 -351 -67 -742 21 -1082 234 -900 1003 -1588 1917 -1714 l92 -13 0 -677 c0 -676 0 -676 38 -683 20 -3 126 -6 235 -6 l197 0 0 1419 c0 1133 -3 1420 -13 1424 -14 5 -426 -75 -445 -87 -9 -5 -12 -118 -12 -467 0 -430 -1 -459 -17 -459 -68 0 -296 58 -418 107 -1082 429 -1520 1696 -932 2695 568 966 1887 1205 2767 501 355 -283 584 -669 677 -1138 28 -144 25 -512 -5 -664 -51 -253 -165 -525 -304 -722 -9 -13 12 -48 118 -197 71 -100 135 -184 142 -187 52 -20 308 418 400 685 269 779 112 1631 -416 2260 -406 484 -981 774 -1627 820 -154 11 -159 11 -325 -1z" />
             </g>
-            <g transform="translate(0,762) scale(0.1,-0.1)" fill="#ee750d">
+            <g transform="translate(0,762) scale(0.1,-0.1)" fill="var(--isac-orange)">
                 <path d="M3705 5020 l-21 -8 -11 -13 -11 -14 -76 -250 -76 -250 -10 -22 -10 -23 -280 0 -280 0 -20 -20 -20 -20 0 -28 0 -28 13 -16 12 -15 218 -167 217 -168 0 -7 0 -8 -80 -261 -80 -261 0 -30 0 -30 16 -15 15 -16 24 -6 24 -6 13 8 13 8 211 163 212 163 9 0 9 0 214 -165 215 -166 22 -5 23 -6 25 16 25 16 6 24 6 24 -86 278 -86 278 8 7 7 6 222 172 223 172 6 26 7 25 -20 26 -20 27 -288 5 -288 5 -86 279 -86 280 -30 12 -30 12 -20 -8z" />
             </g>
         </svg>
