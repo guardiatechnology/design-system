@@ -38,7 +38,9 @@ function componentEntries() {
 /** Public theme modules under ui_kit/theme (excluding tests and stories). */
 function themeEntries() {
     const dir = join(root, "ui_kit", "theme");
-    return readdirSync(dir)
+    return readdirSync(dir, { withFileTypes: true })
+        .filter((d) => d.isFile())
+        .map((d) => d.name)
         .filter((f) => /\.tsx?$/.test(f) && !/\.(test|stories)\./.test(f))
         .map((f) => f.replace(/\.tsx?$/, ""))
         .sort();
@@ -74,13 +76,32 @@ function buildExports() {
     return exp;
 }
 
+/**
+ * Serializes with recursively sorted keys so the sync check compares the set
+ * of subpaths and their targets, not the serialization order. Key order is
+ * irrelevant to Node's exact-match subpath resolution; the generator still
+ * writes a deterministic order below.
+ */
+function stableStringify(value) {
+    if (Array.isArray(value)) {
+        return `[${value.map(stableStringify).join(",")}]`;
+    }
+    if (value && typeof value === "object") {
+        const body = Object.keys(value)
+            .sort()
+            .map((k) => `${JSON.stringify(k)}:${stableStringify(value[k])}`)
+            .join(",");
+        return `{${body}}`;
+    }
+    return JSON.stringify(value);
+}
+
 const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
 const expected = buildExports();
 const check = process.argv.includes("--check");
 
 if (check) {
-    const current = JSON.stringify(pkg.exports ?? {});
-    if (current !== JSON.stringify(expected)) {
+    if (stableStringify(pkg.exports ?? {}) !== stableStringify(expected)) {
         console.error(
             "package.json `exports` is out of sync with ui_kit/.\n" +
                 "Run `npm run exports:generate` and commit the result.",
