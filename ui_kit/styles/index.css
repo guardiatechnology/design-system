@@ -712,9 +712,34 @@ body {
 }
 
 @layer base {
-  *,
-  ::before,
-  ::after {
+  /* Cor padrão de borda.
+   *
+   * O Tailwind v4 mudou o padrão de `border-color` de `gray-200` para
+   * `currentColor`, e o pacote tem dezenas de `border` / `border-b` sem
+   * classe de cor (`TableRow` é `"border-b transition-colors …"`). Esta regra
+   * devolve o comportamento esperado.
+   *
+   * O prefixo `:root` é DE PROPÓSITO. Escrita como `*`, a regra não sobrevivia
+   * num consumidor que roda o próprio Tailwind v4: o preflight do app emite
+   * `@layer base` depois desta folha e, com a mesma especificidade (0,0,0),
+   * a declaração posterior vence. Medido num Next 15 com texto violeta 500 —
+   * `TableRow` saía com `borderBottomColor: rgb(68,24,109)`, ou seja, toda
+   * tabela, cartão e separador riscados na cor do texto, sem erro de build
+   * nem aviso de console. `:root *` é (0,1,0) e vence o `*` do preflight mesmo
+   * sendo emitida antes: dentro da MESMA camada quem decide é a
+   * especificidade, não a ordem.
+   *
+   * Ficar em `@layer base` também é DE PROPÓSITO. Tirar a regra da camada
+   * resolveria o preflight, mas regra sem camada vence QUALQUER regra em
+   * camada — inclusive as utilities de cor de borda, que vivem em
+   * `@layer utilities`. Foi o que aconteceu na primeira tentativa deste fix:
+   * o `Switch` inválido perdeu a borda vermelha e 37 snapshots quebraram.
+   * Em `base`, as utilities continuam vencendo, que é o correto.
+   *
+   * Refs #317. */
+  :root *,
+  :root ::before,
+  :root ::after {
     border-color: hsl(var(--border));
   }
 
