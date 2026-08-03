@@ -213,6 +213,14 @@
   --button-bg: var(--action);
   --button-fg: #ffffff;
   --button-fg-hover: #ffffff;
+
+  /* Texto sobre superfície de ação. Completa o par --action/--action-fg, na
+     mesma convenção de --danger/--danger-fg, --info/--info-fg e
+     --warning/--warning-fg. Sem ele, quem pinta `bg-action` precisa saber
+     alcançar --button-fg, que é nomeado por componente e não por superfície.
+     Mesmo valor de --button-fg de propósito: são a mesma decisão de
+     contraste, e divergir seria bug. Refs #317. */
+  --action-fg: var(--button-fg);
   --button-hover-bg: var(--action-hover);
 
   /* ─── shadcn-compat (HSL triples) ─── */
@@ -338,6 +346,7 @@
   --button-bg: var(--action);
   --button-fg: var(--mono-black);                /* Laranja 500 + Mono Preto = 6.2:1 */
   --button-fg-hover: var(--mono-white);          /* Laranja 700 + Mono White = 5.75:1 (AA); mono-black falharia (3.2:1) */
+  --action-fg: var(--button-fg);                 /* Laranja 500 + Mono Preto = 6.2:1 — ver --button-fg acima */
   --button-hover-bg: var(--action-hover);
 
   /* ─── shadcn-compat (HSL triples) alinhados a Cinza Báltico ─── */
@@ -551,6 +560,7 @@
    * Pair them together when migrating a filled action surface:
    *   bg-action text-button-fg hover:bg-action-hover hover:text-button-fg-hover */
   --color-button-fg: var(--button-fg);
+  --color-action-fg: var(--action-fg);
   --color-button-fg-hover: var(--button-fg-hover);
 
   /* ─── Brand palette exposed as utilities (bg-guardia-orange-500 etc.) ─── */
@@ -712,9 +722,34 @@ body {
 }
 
 @layer base {
-  *,
-  ::before,
-  ::after {
+  /* Cor padrão de borda.
+   *
+   * O Tailwind v4 mudou o padrão de `border-color` de `gray-200` para
+   * `currentColor`, e o pacote tem dezenas de `border` / `border-b` sem
+   * classe de cor (`TableRow` é `"border-b transition-colors …"`). Esta regra
+   * devolve o comportamento esperado.
+   *
+   * O prefixo `:root` é DE PROPÓSITO. Escrita como `*`, a regra não sobrevivia
+   * num consumidor que roda o próprio Tailwind v4: o preflight do app emite
+   * `@layer base` depois desta folha e, com a mesma especificidade (0,0,0),
+   * a declaração posterior vence. Medido num Next 15 com texto violeta 500 —
+   * `TableRow` saía com `borderBottomColor: rgb(68,24,109)`, ou seja, toda
+   * tabela, cartão e separador riscados na cor do texto, sem erro de build
+   * nem aviso de console. `:root *` é (0,1,0) e vence o `*` do preflight mesmo
+   * sendo emitida antes: dentro da MESMA camada quem decide é a
+   * especificidade, não a ordem.
+   *
+   * Ficar em `@layer base` também é DE PROPÓSITO. Tirar a regra da camada
+   * resolveria o preflight, mas regra sem camada vence QUALQUER regra em
+   * camada — inclusive as utilities de cor de borda, que vivem em
+   * `@layer utilities`. Foi o que aconteceu na primeira tentativa deste fix:
+   * o `Switch` inválido perdeu a borda vermelha e 37 snapshots quebraram.
+   * Em `base`, as utilities continuam vencendo, que é o correto.
+   *
+   * Refs #317. */
+  :root *,
+  :root ::before,
+  :root ::after {
     border-color: hsl(var(--border));
   }
 
