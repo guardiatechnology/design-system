@@ -53,6 +53,13 @@ jobs:
       - name: Typecheck (docs)
         run: npm run typecheck:docs
 
+      # Garante que o mapa `exports` do package.json continua em sincronia
+      # com ui_kit/ (subpaths por componente/tema/lib gerados pelo
+      # scripts/generate-exports.mjs). Roda sobre a fonte, antes do build.
+      # Issue #315.
+      - name: Check exports map is in sync
+        run: npm run exports:check
+
       - name: Build package
         run: npm run build
 
