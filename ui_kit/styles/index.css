@@ -27,9 +27,25 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Poppins:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* Garante que o Tailwind escaneie todos os componentes do ui_kit
-   (o path é relativo a este arquivo) */
-@source "../components/**/*.{ts,tsx}";
-@source "../theme/**/*.{ts,tsx}";
+   (o path é relativo a este arquivo).
+ *
+ * A extensão `.js` é necessária porque este mesmo arquivo é copiado
+ * verbatim para `dist/styles/index.css` (rslib.config.ts `output.copy`) e
+ * publicado no pacote. No pacote publicado, `../components/` e `../theme/`
+ * resolvem para `dist/components/` e `dist/theme/`, que só contêm `*.js`
+ * (compilado) e `*.d.ts` (apenas tipos, sem os literais de classe usados
+ * pelos `cva()`) — nunca `*.tsx`. Sem `.js` no glob, o scanner automático
+ * do Tailwind v4 não encontra nenhuma string de classe utilitária real em
+ * um consumidor do pacote publicado, e as classes estruturais dos
+ * componentes (ex.: `h-10`, `px-4`, `rounded-md`, `whitespace-nowrap` do
+ * Button) são podadas por purge — o componente renderiza sem essas
+ * classes, silenciosamente, sem erro de build. Refs #323.
+ *
+ * Mantemos `.tsx`/`.ts` porque Storybook e o site de docs (`docs/`) importam
+ * este arquivo diretamente do source (`ui_kit/styles/index.css`), onde
+ * `../components/**` e `../theme/**` ainda são `.tsx`. */
+@source "../components/**/*.{ts,tsx,js}";
+@source "../theme/**/*.{ts,tsx,js}";
 
 /* Dark mode variant — driven by data-theme OR .dark class */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
