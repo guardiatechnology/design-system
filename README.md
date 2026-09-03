@@ -218,4 +218,8 @@ Consulte [CONTRIBUTING.md](./CONTRIBUTING.md) — resumo:
 
 ## 📄 Licença
 
-Propriedade da **Guardia Finance**. Uso interno apenas.
+Licenciado sob a [Apache License 2.0](LICENSE).
+
+Copyright 2026 Guardia. A licença concede uso, modificação e
+distribuição, inclusive comercial, mantendo o aviso de copyright e a
+atribuição das mudanças.
