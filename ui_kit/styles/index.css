@@ -911,8 +911,8 @@ body {
   width: 100%;
   background: linear-gradient(
     to right,
-    hsl(var(--action)) 0%,
-    hsl(var(--action)) var(--pct),
+    var(--action) 0%,
+    var(--action) var(--pct),
     hsl(var(--muted)) var(--pct),
     hsl(var(--muted)) 100%
   );
@@ -934,9 +934,9 @@ body {
   border: 1px solid hsl(var(--border));
 }
 .guardia-slider::-moz-range-progress {
-  background: hsl(var(--action));
+  background: var(--action);
   border-radius: 9999px;
-  border: 1px solid hsl(var(--action));
+  border: 1px solid var(--action);
 }
 .guardia-slider--sm::-moz-range-track,
 .guardia-slider--sm::-moz-range-progress {
@@ -953,7 +953,7 @@ body {
   appearance: none;
   border-radius: 9999px;
   background: hsl(var(--background));
-  border: 2px solid hsl(var(--action));
+  border: 2px solid var(--action);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
   transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
 }
@@ -972,7 +972,7 @@ body {
 .guardia-slider::-moz-range-thumb {
   border-radius: 9999px;
   background: hsl(var(--background));
-  border: 2px solid hsl(var(--action));
+  border: 2px solid var(--action);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
   transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
 }
@@ -987,11 +987,11 @@ body {
 
 /* ─── Hover (não disabled) ─── */
 .guardia-slider:hover:not(:disabled)::-webkit-slider-thumb {
-  border-color: hsl(var(--action-hover));
+  border-color: var(--action-hover);
   transform: scale(1.05);
 }
 .guardia-slider:hover:not(:disabled)::-moz-range-thumb {
-  border-color: hsl(var(--action-hover));
+  border-color: var(--action-hover);
   transform: scale(1.05);
 }
 
