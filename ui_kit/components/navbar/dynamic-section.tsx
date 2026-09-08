@@ -48,7 +48,7 @@ export const DynamicMenuSections: React.FC<DynamicMenuSectionsProps> = ({
                             size="default"
                             disabled={expandableItem.disabled}
                             className={`
-                                text-brand-fgLight/90 hover:text-brand-fgLight hover:bg-brand-fgLight/15
+                                text-brand-fg-light/90 hover:text-brand-fg-light hover:bg-brand-fg-light/15
                                 rounded-lg transition-all duration-200 mb-1.5
                                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-transparent
                                 ${expandableItem.disabled ? 'opacity-50 cursor-not-allowed' : ''}
@@ -82,10 +82,10 @@ export const DynamicMenuSections: React.FC<DynamicMenuSectionsProps> = ({
                                             size="default"
                                             disabled={child.disabled}
                                             className={`
-                                                text-brand-fgLight/90 hover:text-brand-fgLight hover:bg-brand-fgLight/15
+                                                text-brand-fg-light/90 hover:text-brand-fg-light hover:bg-brand-fg-light/15
                                                 rounded-lg transition-all duration-200 mb-1.5
                                                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-transparent
-                                                ${activeItem === child.title ? 'bg-brand-fgLight/20 text-brand-fgLight font-medium' : ''}
+                                                ${activeItem === child.title ? 'bg-brand-fg-light/20 text-brand-fg-light font-medium' : ''}
                                                 ${child.disabled ? 'opacity-50 cursor-not-allowed' : ''}
                                             `}
                                         >
@@ -117,10 +117,10 @@ export const DynamicMenuSections: React.FC<DynamicMenuSectionsProps> = ({
                         size="default"
                         disabled={regularItem.disabled}
                         className={`
-                            text-brand-fgLight/90 hover:text-brand-fgLight hover:bg-brand-fgLight/15
+                            text-brand-fg-light/90 hover:text-brand-fg-light hover:bg-brand-fg-light/15
                             rounded-lg transition-all duration-200 mb-1.5
                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-transparent
-                            ${activeItem === regularItem.title ? 'bg-brand-fgLight/20 text-brand-fgLight font-medium' : ''}
+                            ${activeItem === regularItem.title ? 'bg-brand-fg-light/20 text-brand-fg-light font-medium' : ''}
                             ${regularItem.disabled ? 'opacity-50 cursor-not-allowed' : ''}
                             group-data-[collapsible=icon]:justify-center
                         `}
@@ -147,7 +147,7 @@ export const DynamicMenuSections: React.FC<DynamicMenuSectionsProps> = ({
         <>
             {currentAreaConfig.sections.map((section) => (
                 <SidebarGroup key={section.label}>
-                    <SidebarGroupLabel className="text-[10px] tracking-wider text-brand-fgLight/80 truncate">
+                    <SidebarGroupLabel className="text-[10px] tracking-wider text-brand-fg-light/80 truncate">
                         {section.label}
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
