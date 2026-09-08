@@ -550,6 +550,14 @@
   --color-action: var(--action);
   --color-action-hover: var(--action-hover);
 
+  /* Brand accent token, mapped so `bg-accent-brand`, `border-accent-brand`
+   * and `text-accent-brand` actually compile. In Tailwind v4 a utility only
+   * exists when the matching `--color-*` token is declared here — the raw
+   * `--accent-brand` above is invisible to the utility generator on its own.
+   * Token semantics: orange-500 (light) / purple-200 (dark) — see #319. */
+  --color-accent-brand: var(--accent-brand);
+  --color-accent-brand-hover: var(--accent-brand-hover);
+
   /* Soft brand-tinted hover surface for ghost/outline interactive variants.
    * Pairs with `bg-bg-hover` utility (violet-100 light / gray-700 dark). */
   --color-bg-hover: var(--bg-hover);

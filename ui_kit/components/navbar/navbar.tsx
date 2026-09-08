@@ -136,11 +136,11 @@ function NavbarInternal({
                 <SidebarHeader>
                     <div className="min-w-0 flex-1 mt-2 pr-2 pl-2 text-left">
                         <When condition={Boolean(settings.organization?.subtitle)}>
-                            <p className="text-xs font-semibold text-brand-fgLight/80 uppercase tracking-wide truncate">
+                            <p className="text-xs font-semibold text-brand-fg-light/80 uppercase tracking-wide truncate">
                                 {settings.organization?.subtitle}
                             </p>
                         </When>
-                        <h3 className="text-brand-fgLight font-semibold text-lg truncate">
+                        <h3 className="text-brand-fg-light font-semibold text-lg truncate">
                             {settings.organization?.name}
                         </h3>
                     </div>
@@ -158,10 +158,10 @@ function NavbarInternal({
                                         tooltip={isCollapsed ? item.title : undefined}
                                         size="default"
                                         className={`
-                                            text-brand-fgLight/90 hover:text-brand-fgLight hover:bg-brand-fgLight/15
+                                            text-brand-fg-light/90 hover:text-brand-fg-light hover:bg-brand-fg-light/15
                                             rounded-lg transition-all duration-200 mb-1.5
                                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-transparent
-                                            ${activeNavigationArea === item.title ? 'bg-brand-fgLight/20 text-brand-fgLight font-medium' : ''}
+                                            ${activeNavigationArea === item.title ? 'bg-brand-fg-light/20 text-brand-fg-light font-medium' : ''}
                                             group-data-[collapsible=icon]:justify-center
                                         `}
                                     >
@@ -185,7 +185,7 @@ function NavbarInternal({
 
                 <When condition={Boolean(settings.generalArea)}>
                     <SidebarGroup className="mt-2">
-                        <SidebarGroupLabel className="text-[10px] tracking-wider text-brand-fgLight/80 truncate">
+                        <SidebarGroupLabel className="text-[10px] tracking-wider text-brand-fg-light/80 truncate">
                             {settings.generalArea?.title}
                         </SidebarGroupLabel>
                         <SidebarGroupContent>
@@ -198,7 +198,7 @@ function NavbarInternal({
                                             tooltip={isCollapsed ? item.title : undefined}
                                             size="default"
                                             className={`
-                                                 text-brand-fgLight/90 hover:text-brand-fgLight hover:bg-brand-fgLight/15
+                                                 text-brand-fg-light/90 hover:text-brand-fg-light hover:bg-brand-fg-light/15
                                                  rounded-lg transition-all duration-200 mb-1.5
                                                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-transparent
                                                  group-data-[collapsible=icon]:justify-center
@@ -228,7 +228,7 @@ function NavbarInternal({
 
             <SidebarFooter>
                 <When condition={Boolean(settings.user)}>
-                    <div className="flex items-center gap-3 rounded-lg p-2 text-brand-fgLight/90 hover:bg-brand-fgLight/10">
+                    <div className="flex items-center gap-3 rounded-lg p-2 text-brand-fg-light/90 hover:bg-brand-fg-light/10">
                         <When condition={Boolean(settings.user?.avatar)}>
                             <img
                                 src={settings.user?.avatar}
@@ -237,21 +237,21 @@ function NavbarInternal({
                             />
                         </When>
                         <When condition={!settings.user?.avatar}>
-                            <div className="min-h-8 min-w-8 h-8 w-8 flex items-center justify-center rounded-full bg-brand-fgLight/20 text-brand-fgLight text-sm font-semibold">
+                            <div className="min-h-8 min-w-8 h-8 w-8 flex items-center justify-center rounded-full bg-brand-fg-light/20 text-brand-fg-light text-sm font-semibold">
                                 {settings.user?.initials || settings.user?.name?.split(' ').map(n => n[0]).join('').toUpperCase()}
                             </div>
                         </When>
                         <When condition={!isCollapsed}>
                             <div className="min-w-0 text-left truncate">
-                                <p className="text-sm font-semibold text-brand-fgLight">{settings.user?.name}</p>
-                                <p className="text-[11px] text-brand-fgLight/80">{settings.user?.email}</p>
+                                <p className="text-sm font-semibold text-brand-fg-light">{settings.user?.name}</p>
+                                <p className="text-[11px] text-brand-fg-light/80">{settings.user?.email}</p>
                             </div>
                         </When>
                     </div>
                 </When>
                 <When condition={Boolean(settings.footer)}>
                     <div className={`
-                        mt-2 flex px-2 text-[10px] text-brand-fgLight/70
+                        mt-2 flex px-2 text-[10px] text-brand-fg-light/70
                         ${isCollapsed ? 'flex-col items-center gap-1 text-center' : 'items-center justify-between truncate'}
                     `}>
                         <When condition={Boolean(settings.footer?.version)}>
